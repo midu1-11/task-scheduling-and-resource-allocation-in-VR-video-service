@@ -120,8 +120,28 @@ class Allocator:
                     saveContent += " "
             self.sock.send(saveContent.encode('utf-8'))
 
+    def allocateRandomLagrangeMultiplierStrategy(self, n):
+        agent = Agent(n=n, lr_critic=0, lr_actor=0, batch_size=0, target_update=0, gamma=0,
+                      path=r"F:\Bupt\task-scheduling-and-resource-allocation-in-VR-video-service\nonlinear_programming\gnn_a2c_lm\GALModel.pkl")
+        env = Env()
+        map = agent.generate_map(n)
+        while (True):
+            data = self.sock.recv(1024)
+            data = str(data, 'UTF-8')
+            print(data)
+            state = readState(data, n)
+            action = random.sample(map, 1)[0]
+            policy = agent.action_to_policy(state, action)
+            saveContent = ""
+            savePolicy = policy[0] + policy[1] + policy[2]
+            for i in range(len(savePolicy)):
+                saveContent += str(savePolicy[i])
+                if i != len(savePolicy) - 1:
+                    saveContent += " "
+            self.sock.send(saveContent.encode('utf-8'))
+
 def main():
-    Allocator().allocateEnumerateBestStrategy(3)
+    Allocator().allocateRandomLagrangeMultiplierStrategy(3)
 
 if __name__ == "__main__":
     main()

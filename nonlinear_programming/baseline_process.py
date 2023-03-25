@@ -167,11 +167,11 @@ class RandomLagrangeMultiplierStrategy:
 
 
 def main():
-    RandomEquipartitionStrategy().writeResult(3)
+    # RandomEquipartitionStrategy().writeResult(3)
     # RandomStrategy().writeResult(3)
     # GenerateState().writeResult(3)
     # BestStrategy().writeResult(3)
-    # RandomLagrangeMultiplierStrategy().writeResult(3)
+    RandomLagrangeMultiplierStrategy().writeResult(3)
 
 
 if __name__ == "__main__":

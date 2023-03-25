@@ -42,12 +42,15 @@ def main(n):
         randomEquipartitionStrategy_content = randomEquipartitionStrategy_file.readlines()
     with open("F:\\MatlabWorkspace\\nonlinear_programming\\随机策略决策结果.txt", encoding='utf-8') as randomStrategy_file:
         randomStrategy_content = randomStrategy_file.readlines()
+    with open("F:\\MatlabWorkspace\\nonlinear_programming\\随机lm策略决策结果.txt", encoding='utf-8') as randomLagrangeMultiplierStrategy_file:
+        randomLagrangeMultiplierStrategy_content = randomLagrangeMultiplierStrategy_file.readlines()
     with open("F:\\MatlabWorkspace\\nonlinear_programming\\GAL策略决策结果.txt", encoding='utf-8') as GALStrategy_file:
         GALStrategy_content = GALStrategy_file.readlines()
 
     best_delay_list = []
     randomEquipartitionStrategy_delay_list = []
     randomStrategy_delay_list = []
+    randomLagrangeMultiplierStrategy_delay_list = []
     GALStrategy_delay_list = []
 
     for i in range(0,4000):
@@ -56,6 +59,7 @@ def main(n):
         best_policy = Compare().readPolicy(best_content[i], n)
         randomEquipartitionStrategy_policy = Compare().readPolicy(randomEquipartitionStrategy_content[i], n)
         randomStrategy_policy = Compare().readPolicy(randomStrategy_content[i], n)
+        randomLagrangeMultiplierStrategy_policy = Compare().readPolicy(randomLagrangeMultiplierStrategy_content[i], n)
         GALStrategy_policy = Compare().readPolicy(GALStrategy_content[i], n)
 
         best_delay, _ = env.step(state, best_policy, n)
@@ -64,12 +68,15 @@ def main(n):
         randomEquipartitionStrategy_delay *= -1
         randomStrategy_delay, _ = env.step(state, randomStrategy_policy, n)
         randomStrategy_delay *= -1
+        randomLagrangeMultiplierStrategy_delay, _ = env.step(state, randomLagrangeMultiplierStrategy_policy, n)
+        randomLagrangeMultiplierStrategy_delay *= -1
         GALStrategy_delay, _ = env.step(state, GALStrategy_policy, n)
         GALStrategy_delay *= -1
 
         best_delay_list.append(best_delay)
         randomEquipartitionStrategy_delay_list.append(randomEquipartitionStrategy_delay)
         randomStrategy_delay_list.append(randomStrategy_delay)
+        randomLagrangeMultiplierStrategy_delay_list.append(randomLagrangeMultiplierStrategy_delay)
         GALStrategy_delay_list.append(GALStrategy_delay)
 
 
@@ -78,8 +85,9 @@ def main(n):
     plt.plot(best_delay_list, c="red")
     plt.plot(randomEquipartitionStrategy_delay_list, c="yellow")
     plt.plot(randomStrategy_delay_list, c="yellow")
+    plt.plot(randomLagrangeMultiplierStrategy_delay_list, c="black")
     plt.plot(GALStrategy_delay_list, c="black")
-    plt.legend(["最优策略","随机均分策略","随机策略","GAL策略"])
+    plt.legend(["最优策略","随机均分策略","随机策略","随机lm策略","GAL策略"])
     plt.xlabel("时隙")
     plt.ylabel("当前时隙任务平均延迟")
     plt.show()
@@ -88,6 +96,7 @@ def main(n):
     print("最优策略:"+str(sum(best_delay_list)/4000))
     print("随机均分策略:" + str(sum(randomEquipartitionStrategy_delay_list) / 4000))
     print("随机策略:" + str(sum(randomStrategy_delay_list) / 4000))
+    print("随机lm策略:" + str(sum(randomLagrangeMultiplierStrategy_delay_list) / 4000))
     print("GAL策略:" + str(sum(GALStrategy_delay_list) / 4000))
 
 if __name__ == "__main__":
