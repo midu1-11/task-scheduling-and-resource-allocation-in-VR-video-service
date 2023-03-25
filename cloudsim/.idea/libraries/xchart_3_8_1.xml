@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="xchart-3.8.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/modules/cloudsim-examples/mylibs/xchart-3.8.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

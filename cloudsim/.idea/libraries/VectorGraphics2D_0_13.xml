@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="VectorGraphics2D-0.13">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/modules/cloudsim-examples/mylibs/VectorGraphics2D-0.13.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
