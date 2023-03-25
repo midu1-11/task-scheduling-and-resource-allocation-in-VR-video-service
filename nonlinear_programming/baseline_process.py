@@ -167,10 +167,10 @@ class RandomLagrangeMultiplierStrategy:
 
 
 def main():
-    RandomEquipartitionStrategy().writeResult(8)
-    # RandomStrategy().writeResult(5)
-    # GenerateState().writeResult(8)
-    # BestStrategy().writeResult(8)
+    RandomEquipartitionStrategy().writeResult(3)
+    # RandomStrategy().writeResult(3)
+    # GenerateState().writeResult(3)
+    # BestStrategy().writeResult(3)
     # RandomLagrangeMultiplierStrategy().writeResult(3)
 
 

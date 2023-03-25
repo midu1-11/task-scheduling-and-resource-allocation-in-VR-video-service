@@ -31,4 +31,4 @@ def main(n):
             GALfile.write(saveContent)
 
 if __name__ == "__main__":
-    main(8)
+    main(3)
