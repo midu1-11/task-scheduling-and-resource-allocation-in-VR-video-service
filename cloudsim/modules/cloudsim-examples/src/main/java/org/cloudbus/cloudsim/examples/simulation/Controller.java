@@ -6,6 +6,7 @@ import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.core.SimEntity;
 import org.cloudbus.cloudsim.core.SimEvent;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -68,6 +69,11 @@ public class Controller extends DatacenterBroker {
                 myCloudletList.add((MyCloudlet) ev.getData());
                 if (myCloudletList.size() == clientList.size()) {
                     processAllocate();
+//                    for (Cloudlet cloudlet : myCloudletList) {
+//                        System.out.println(cloudlet.getCloudletLength() + " " + cloudlet.getCloudletOutputSize() + " || ");
+//                    }
+//                    MyCloudlet myCloudlet = (MyCloudlet) (myCloudletList.get(0));
+//                    System.out.println("pt=" + myCloudlet.getPt());
                     processCloudletSubmit();
                 }
                 break;
@@ -91,20 +97,27 @@ public class Controller extends DatacenterBroker {
         }
     }
 
+    private double max(double a, double b) {
+        if (a > b)
+            return a;
+        else
+            return b;
+    }
+
     // 将任务信息、网络信息、云服务器信息转化为特定字符串格式
     private String processState() {
         StringBuffer stringBuffer = new StringBuffer();
-        double pt = Math.abs(new Random().nextGaussian() + 0.5);
+        double pt = max(0, 0.02 * (new Random().nextGaussian()) + 0.04);
         for (Cloudlet cloudlet : myCloudletList) {
             ((MyCloudlet) cloudlet).setPt(pt);
-            stringBuffer.append(cloudlet.getCloudletOutputSize() / 1000.0);
+            stringBuffer.append(cloudlet.getCloudletOutputSize() / 1000000.0);
             stringBuffer.append(" ");
-            stringBuffer.append(cloudlet.getCloudletLength() / 1000.0);
+            stringBuffer.append(cloudlet.getCloudletLength() / 1000000.0);
             stringBuffer.append(" ");
         }
         stringBuffer.append(pt);
         stringBuffer.append(" ");
-        stringBuffer.append(5);
+        stringBuffer.append(0.007);
         return stringBuffer.toString();
     }
 
@@ -112,7 +125,7 @@ public class Controller extends DatacenterBroker {
     private void processAllocate() {
         OutputStream outputStream = null;
         InputStream inputStream = null;
-        byte[] buf = new byte[1024];
+        byte[] buf = new byte[2048];
         int readLen = 0;
         try {
             // 通过socket的TCP通信拿到python端返回的决策结果
@@ -185,7 +198,7 @@ public class Controller extends DatacenterBroker {
             cpuSpeedAlloaction[i] = (int) (Double.parseDouble(allocation[i + clientNum() * 2]) * 1000);
         }
         pt = Double.parseDouble(allocation[clientNum() * 3]);
-        sc = (int) (Double.parseDouble(allocation[clientNum() * 3 + 1]) * 1000);
+        sc = (int) (Double.parseDouble(allocation[clientNum() * 3 + 1]) * 10000000);
 
         for (int i = 0; i < clientNum(); i++) {
             // 云端创建虚拟机
@@ -242,7 +255,7 @@ public class Controller extends DatacenterBroker {
         return clientList.size();
     }
 
-    // 打印所有时隙平均延迟
+    // 打印客户端平均延迟
     @Override
     public void shutdownEntity() {
         super.shutdownEntity();
@@ -251,6 +264,6 @@ public class Controller extends DatacenterBroker {
         for (Double delay : delayRecordList) {
             delaySum += delay;
         }
-        System.out.println("平均延迟：" + delaySum / delayNum);
+        System.out.println("平均延迟：" + delaySum / (delayNum * clientNum()));
     }
 }

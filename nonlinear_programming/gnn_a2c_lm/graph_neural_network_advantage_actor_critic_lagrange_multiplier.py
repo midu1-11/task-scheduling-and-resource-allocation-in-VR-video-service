@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import random
 import math
 import os
+import copy
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
@@ -269,8 +270,8 @@ class Resource:
     # RRT条件下的拉格朗日乘子法
     def lagrange_multiplier(self, b_d, action):
         b_d_tmp = [[0, 0] for i in range(len(b_d))]
-        w = 7
-        s = 10
+        w = 100.0
+        s = 200.0
         for i in range(len(b_d)):
             b_d_tmp[i][0] = math.sqrt(b_d[i][0])
             b_d_tmp[i][1] = math.sqrt(b_d[i][1])
@@ -292,12 +293,18 @@ class Env:
     def __init__(self):
         pass
 
+    def max(self, a, b):
+        if a > b:
+            return a
+        else:
+            return b
+
     # 产生n个任务组成的集合
     def generate_state(self, n):
         b_d = []
         for i in range(n):
-            b_d.append([3 * random.random() + 0.5, 10 * random.random() + 4])
-        pt_sc = [abs(random.gauss(0.5, 1)), 5]
+            b_d.append([0.086 * random.random() + 0.014, 1.36 * random.random() + 0.4])
+        pt_sc = [self.max(0, random.gauss(0.04, 0.02)), 0.007]
 
         state = (b_d, pt_sc)
         return state
@@ -327,7 +334,7 @@ class Env:
         for i in range(len(action)):
             if S[i] == 0:
                 S[i] = 1
-            delay += b[i] / W[i] + action[i] * d[i] / S[i] + (1 - action[i]) * (d[i] / sc + pt)
+            delay += b[i] / W[i] + action[i] * d[i] / S[i] + (1 - action[i]) * (d[i] / (sc * 10000) + pt)
 
         reward = -1 * delay
 
@@ -351,12 +358,12 @@ class Test():
             delay = reward * -1
             delay_sum += delay
 
-        return delay_sum / num
+        return delay_sum / (num * n)
 
 
 def main():
     n = 3
-    agent = Agent(n=n, lr_critic=0.00001, lr_actor=0.0005, batch_size=40, target_update=10, gamma=0.98, path=None)
+    agent = Agent(n=n, lr_critic=0.0000005, lr_actor=0.00005, batch_size=40, target_update=10, gamma=0.98, path=None)
     env = Env()
     step = 100
     epoch = 20
@@ -374,12 +381,12 @@ def main():
             state = next_state
 
         print("==============epoch:" + str(i) + "==============")
-        avg_delay = Test().test_delay(agent, env, 1000, n)
+        avg_delay = Test().test_delay(agent, env, 4000, n)
         if avg_delay < min_avg_delay:
             min_avg_delay = avg_delay
-            agent.best_model = agent.model
+            agent.best_model = copy.deepcopy(agent.model)
         delay_list.append(avg_delay)
-        print("平均延迟:" + str(avg_delay))
+        print("客户端平均延迟(s):" + str(avg_delay))
         print("动作:" + str(action))
         print("动作概率:" + str(prob))
         agent.free_replay_memory()
@@ -387,7 +394,8 @@ def main():
     plt.plot(delay_list, c="red")
     plt.show()
 
-    agent.save_model(r"F:\PythonWorkspace\nonlinear_programming\gnn_a2c_lm\GALModel.pkl")
+    agent.save_model(
+        r"F:\Bupt\task-scheduling-and-resource-allocation-in-VR-video-service\nonlinear_programming\gnn_a2c_lm\GALModel.pkl")
 
 
 if __name__ == "__main__":

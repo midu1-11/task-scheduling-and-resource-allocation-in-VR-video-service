@@ -35,7 +35,7 @@ public class CloudServer extends Datacenter {
         List<Pe> peList = new ArrayList<>();
 
         // 云服务器的cpu速度近乎无限
-        int mips = 999999;
+        int mips = 90000000;
 
         // 这里一台主机只放了一个cpu
         peList.add(new Pe(0, new PeProvisionerSimple(mips)));
@@ -45,9 +45,9 @@ public class CloudServer extends Datacenter {
         hostId=主机id，ram=主机内存，storage=主机磁盘大小，bw=带宽，目前这几个参数没啥用，不超过Datacenter容量就行
         * */
         int hostId = 0;
-        int ram = 16384; //host memory (MB)
+        int ram = 90000000; //host memory (MB)
         long storage = 1000000; //host storage
-        int bw = 100000;
+        int bw = 90000000;
 
         // VmSchedulerTimeShared方式，即主机允许在一个cpu上架设多个vm虚拟机
         hostList.add(
@@ -96,7 +96,7 @@ public class CloudServer extends Datacenter {
         int vmId = cl.getVmId();
         Host host = getVmAllocationPolicy().getHost(vmId, userId);
         Vm vm = host.getVm(vmId, userId);
-        double delay = cl.getCloudletOutputSize() / (double) vm.getBw() + ((MyCloudlet) cl).getPt();
+        double delay = cl.getCloudletOutputSize() / (double) vm.getBw() + ((MyCloudlet) cl).getPt()*1000;
         send(cl.getUserId(), delay, CloudSimTags.CLOUDLET_RETURN, cl);
     }
 }

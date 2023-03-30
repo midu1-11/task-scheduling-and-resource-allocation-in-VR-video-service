@@ -12,7 +12,7 @@ def readState(line, n):
 
 def main(n):
     agent = Agent(n=n, lr_critic=0, lr_actor=0, batch_size=0, target_update=0, gamma=0,
-                  path=r"F:\PythonWorkspace\nonlinear_programming\gnn_a2c_lm\GALModel.pkl")
+                  path=r"F:\Bupt\task-scheduling-and-resource-allocation-in-VR-video-service\nonlinear_programming\gnn_a2c_lm\GALModel.pkl")
     with open("F:\\MatlabWorkspace\\nonlinear_programming\\测试样本.txt", encoding='utf-8') as file:
         content = file.readlines()
     with open("F:\\MatlabWorkspace\\nonlinear_programming\\GAL策略决策结果.txt", 'w+') as GALfile:

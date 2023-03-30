@@ -5,6 +5,7 @@ import org.cloudbus.cloudsim.core.CloudSimTags;
 import org.cloudbus.cloudsim.provisioners.BwProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.PeProvisionerSimple;
 import org.cloudbus.cloudsim.provisioners.RamProvisionerSimple;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class EdgeServer extends Datacenter {
         // cpu列表
         List<Pe> peList = new ArrayList<>();
 
-        int mips = 10000;
+        int mips = 200000;
 
         // 这里一台主机只放了一个cpu
         peList.add(new Pe(0, new PeProvisionerSimple(mips)));
@@ -44,9 +45,9 @@ public class EdgeServer extends Datacenter {
         hostId=主机id，ram=主机内存，storage=主机磁盘大小，bw=带宽，目前这几个参数没啥用，不超过Datacenter容量就行
         * */
         int hostId = 0;
-        int ram = 16384; //host memory (MB)
+        int ram = 90000000; //host memory (MB)
         long storage = 1000000; //host storage
-        int bw = 100000;
+        int bw = 90000000;
 
         //VmSchedulerTimeShared方式，即主机允许在一个cpu上架设多个vm虚拟机
         hostList.add(
@@ -108,32 +109,35 @@ public class EdgeServer extends Datacenter {
         // 更新所有任务进度并做出一个无效事件调度（因为没考虑虚拟机间计算资源转移）
         super.updateCloudletProcessing();
 
-        // 边缘服务器唯一一台主机
-        Host host = getVmAllocationPolicy().getHostList().get(0);
-        // 这台主机的所有虚拟机的现有cpu速度
-        Map<String, List<Double>> map = host.getVmScheduler().getMipsMap();
+        boolean share = true;
+        if (share) {
+            // 边缘服务器唯一一台主机
+            Host host = getVmAllocationPolicy().getHostList().get(0);
+            // 这台主机的所有虚拟机的现有cpu速度
+            Map<String, List<Double>> map = host.getVmScheduler().getMipsMap();
 
-        // 统计未执行完任务的虚拟机数量
-        int count = 0;
-        for (Vm vm : getVmList()) {
-            if (vm.getCloudletScheduler().getCloudletExecList().size() != 0) {
-                count++;
-            }
-        }
-
-        // 将本次唯一一个正好执行完任务的虚拟机的cpu速度，平均分给所有未执行完任务的虚拟机
-        for (Vm vm : getVmList()) {
-            if (vm.getMips() != 0 && vm.getCloudletScheduler().getCloudletExecList().size() == 0) {
-                for (Vm vm1 : getVmList()) {
-                    if (vm1.getCloudletScheduler().getCloudletExecList().size() != 0) {
-                        double a = map.get(vm1.getUid()).get(0) + map.get(vm.getUid()).get(0) / count;
-                        ((MyCloudletScheduler) (vm1.getCloudletScheduler())).setMips(a);
-                    }
+            // 统计未执行完任务的虚拟机数量
+            int count = 0;
+            for (Vm vm : getVmList()) {
+                if (vm.getCloudletScheduler().getCloudletExecList().size() != 0) {
+                    count++;
                 }
-                vm.setMips(0);
             }
+
+            // 将本次唯一一个正好执行完任务的虚拟机的cpu速度，平均分给所有未执行完任务的虚拟机
+            for (Vm vm : getVmList()) {
+                if (vm.getMips() != 0 && vm.getCloudletScheduler().getCloudletExecList().size() == 0) {
+                    for (Vm vm1 : getVmList()) {
+                        if (vm1.getCloudletScheduler().getCloudletExecList().size() != 0) {
+                            double a = map.get(vm1.getUid()).get(0) + map.get(vm.getUid()).get(0) * 0.6 / count;
+                            ((MyCloudletScheduler) (vm1.getCloudletScheduler())).setMips(a);
+                        }
+                    }
+                    vm.setMips(0);
+                }
+            }
+            // 再次更新所有任务进度（时间没变所以相当于没更新），并做出正确的的事件调度（考虑了虚拟机间计算资源转移）
+            super.updateCloudletProcessing();
         }
-        // 再次更新所有任务进度（时间没变所以相当于没更新），并做出正确的的事件调度（考虑了虚拟机间计算资源转移）
-        super.updateCloudletProcessing();
     }
 }

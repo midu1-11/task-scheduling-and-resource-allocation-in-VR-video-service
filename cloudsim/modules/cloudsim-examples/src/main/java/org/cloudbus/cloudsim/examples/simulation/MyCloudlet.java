@@ -34,13 +34,13 @@ public class MyCloudlet extends Cloudlet {
     // 静态方法，用于产生一个任务
     public static MyCloudlet createOneCloudlet(int userId) {
         // 任务的cpu长度
-        long length = (long) (10000 * Math.random() + 4000);
+        long length = (long) (1360000 * Math.random() + 400000);
 
         // 任务大小，在VR视频业务中认为任务的数据量很小
         long fileSize = 0;//KB
 
         // 任务结果大小
-        long outputSize = (long) (3000 * Math.random() + 500);//KB
+        long outputSize = (long) (86000 * Math.random() + 14000);//KB
         int pesNumber = 1;
 
         //资源利用率，不知道干啥的
