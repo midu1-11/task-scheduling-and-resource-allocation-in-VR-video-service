@@ -22,6 +22,11 @@ import java.util.Random;
  */
 public class Controller extends DatacenterBroker {
 
+    // 存储了每个时隙的云利用率
+    private List<Double> cloudUtilizationList = new ArrayList<>();
+
+    private boolean isSaveDelay = false;
+
     // 和python端通过socket通信
     private ServerSocket serverSocket = new ServerSocket(9999);
     private Socket socket;
@@ -43,11 +48,15 @@ public class Controller extends DatacenterBroker {
     // 记录了每个时隙所有客户端的总延迟
     private List<Double> delayRecordList = new ArrayList<>();
 
-    public Controller(String name, SimEntity EdgeServer, SimEntity CloudServer)
+    // 记录了每个时隙每个客户端的延迟
+    private List<Double> clientDelayRecordList = new ArrayList<>();
+
+    public Controller(String name, SimEntity EdgeServer, SimEntity CloudServer, boolean isSaveDelay)
             throws Exception {
         super(name);
         this.EdgeServer = EdgeServer;
         this.CloudServer = CloudServer;
+        this.isSaveDelay = isSaveDelay;
         socket = serverSocket.accept();
     }
 
@@ -81,6 +90,7 @@ public class Controller extends DatacenterBroker {
             // 保存某一时隙的所有客户端的延迟之和
             case MyTags.SUBMIT_ONE_DELAY_RECORD:
                 delayList.add((Double) ev.getData());
+                clientDelayRecordList.add((Double) ev.getData());
                 Double delaySum = 0.0;
                 if (delayList.size() == clientList.size()) {
                     for (Double delay : delayList) {
@@ -121,6 +131,17 @@ public class Controller extends DatacenterBroker {
         return stringBuffer.toString();
     }
 
+    private void recordCloudUtilization(String result) {
+        double cloudNum = 0;
+        String[] taskScheduleResult = result.split(" ");
+        for (int i = 0; i < clientNum(); i++) {
+            if (Integer.parseInt(taskScheduleResult[i]) == 0) {
+                cloudNum++;
+            }
+        }
+        cloudUtilizationList.add(cloudNum / clientNum());
+    }
+
     // 进行资源分配
     private void processAllocate() {
         OutputStream outputStream = null;
@@ -135,6 +156,7 @@ public class Controller extends DatacenterBroker {
             inputStream = socket.getInputStream();
             readLen = inputStream.read(buf);
             String result = new String(buf, 0, readLen);
+            recordCloudUtilization(result);
             System.out.println(CloudSim.clock() + ": " + result);
 
             // 清空上一时隙创建的所有虚拟机
@@ -261,9 +283,41 @@ public class Controller extends DatacenterBroker {
         super.shutdownEntity();
         int delayNum = delayRecordList.size();
         double delaySum = 0;
-        for (Double delay : delayRecordList) {
-            delaySum += delay;
+        double cloudUtilizationSum = 0;
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < delayNum; i++) {
+            delaySum += delayRecordList.get(i);
+            cloudUtilizationSum += cloudUtilizationList.get(i);
+            sb.append(delayRecordList.get(i) / clientNum());
+            if (i != delayNum - 1) {
+                sb.append(" ");
+            }
         }
         System.out.println("平均延迟：" + delaySum / (delayNum * clientNum()));
+
+        double failNum = 0;
+        for (double delay : clientDelayRecordList) {
+            if (delay > 100) {
+                failNum++;
+            }
+        }
+        System.out.println("准确率：" + (clientDelayRecordList.size() - failNum)
+                / clientDelayRecordList.size());
+        System.out.println("云利用率：" + cloudUtilizationSum / cloudUtilizationList.size());
+
+        if (isSaveDelay) {
+            File file = new File("F:\\MatlabWorkspace\\nonlinear_programming\\Evaluation\\map2_3.txt");
+            try {
+                FileOutputStream fos = new FileOutputStream(file, true);
+                OutputStreamWriter osw = new OutputStreamWriter(fos);
+                BufferedWriter bw = new BufferedWriter(osw);
+                bw.write(sb.toString());
+                bw.newLine();
+                bw.flush();
+                bw.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

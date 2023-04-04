@@ -1,6 +1,7 @@
 import copy
 import random
 from gnn_a2c_lm.graph_neural_network_advantage_actor_critic_lagrange_multiplier import *
+import time
 
 w = 0
 s = 0
@@ -56,7 +57,7 @@ class ThresholdProportionalStrategy:
                 b_d = state[0]
                 action = []
                 for j in range(n):
-                    if b_d[j][1] > 0.8:
+                    if b_d[j][1] > 1.6:
                         action.append(0)
                     else:
                         action.append(1)
@@ -293,19 +294,29 @@ class EdgeLagrangeMultiplierStrategy:
 
 
 def main():
-    n = 3
+    n = 8
     global w, s
     w = 100.0
     s = 200.0
     GenerateState().writeResult(n)
+    time1 = time.time()
     RandomEquipartitionStrategy().writeResult(n)
+    time2 = time.time()
     RandomStrategy().writeResult(n)
+    time3 = time.time()
     ThresholdProportionalStrategy().writeResult(n)
+    time4 = time.time()
     if n <= 12:
         BestStrategy().writeResult(n)
+    time5 = time.time()
     RandomLagrangeMultiplierStrategy().writeResult(n)
     CloudLagrangeMultiplierStrategy().writeResult(n)
     EdgeLagrangeMultiplierStrategy().writeResult(n)
+
+    print("枚举最优策略用时(s)：" + str(time5 - time4))
+    print("阈值比例策略用时(s)：" + str(time4 - time3))
+    print("随机均分策略用时(s)：" + str(time2 - time1))
+    print("完全随机策略用时(s)：" + str(time3 - time2))
 
 
 if __name__ == "__main__":

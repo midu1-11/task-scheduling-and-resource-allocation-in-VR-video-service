@@ -4,6 +4,8 @@ from gnn_a2c_lm.graph_neural_network_advantage_actor_critic_lagrange_multiplier 
 plt.rcParams['font.sans-serif'] = ['SimHei']  # 显示中文标签
 plt.rcParams['axes.unicode_minus'] = False
 
+bar = 0
+
 
 class Compare:
     def __init__(self):
@@ -36,7 +38,7 @@ def main(n):
 
     with open("F:\\MatlabWorkspace\\nonlinear_programming\\测试样本.txt", encoding='utf-8') as file:
         content = file.readlines()
-    if n <= 12:
+    if n <= bar:
         with open("F:\\MatlabWorkspace\\nonlinear_programming\\最优策略决策结果.txt", encoding='utf-8') as best_file:
             best_content = best_file.readlines()
     with open("F:\\MatlabWorkspace\\nonlinear_programming\\随机均分策略决策结果.txt",
@@ -59,7 +61,7 @@ def main(n):
               encoding='utf-8') as ThresholdProportionalStrategy_file:
         ThresholdProportionalStrategy_content = ThresholdProportionalStrategy_file.readlines()
 
-    if n <= 12:
+    if n <= bar:
         best_delay_list = []
     randomEquipartitionStrategy_delay_list = []
     randomStrategy_delay_list = []
@@ -72,7 +74,7 @@ def main(n):
     for i in range(0, 4000):
         state = Compare().readState(content[i], n)
 
-        if n <= 12:
+        if n <= bar:
             best_policy = Compare().readPolicy(best_content[i], n)
         randomEquipartitionStrategy_policy = Compare().readPolicy(randomEquipartitionStrategy_content[i], n)
         randomStrategy_policy = Compare().readPolicy(randomStrategy_content[i], n)
@@ -82,7 +84,7 @@ def main(n):
         EdgeLagrangeMultiplierStrategy_policy = Compare().readPolicy(EdgeLagrangeMultiplierStrategy_content[i], n)
         ThresholdProportionalStrategy_policy = Compare().readPolicy(ThresholdProportionalStrategy_content[i], n)
 
-        if n <= 12:
+        if n <= bar:
             best_delay, _ = env.step(state, best_policy, n)
             best_delay *= -1
         randomEquipartitionStrategy_delay, _ = env.step(state, randomEquipartitionStrategy_policy, n)
@@ -100,7 +102,7 @@ def main(n):
         ThresholdProportionalStrategy_delay, _ = env.step(state, ThresholdProportionalStrategy_policy, n)
         ThresholdProportionalStrategy_delay *= -1
 
-        if n <= 12:
+        if n <= bar:
             best_delay_list.append(best_delay)
         randomEquipartitionStrategy_delay_list.append(randomEquipartitionStrategy_delay)
         randomStrategy_delay_list.append(randomStrategy_delay)
@@ -124,7 +126,7 @@ def main(n):
 
     # 打印客户端平均延迟对比
     print("=============客户端平均延迟(ms)=============")
-    if n <= 12:
+    if n <= bar:
         print("枚举最优策略:" + str(sum(best_delay_list) / (4000 * n) * 1000))
     print("GAL策略:" + str(sum(GALStrategy_delay_list) / (4000 * n) * 1000))
     print("随机lm策略:" + str(sum(randomLagrangeMultiplierStrategy_delay_list) / (4000 * n) * 1000))
@@ -136,4 +138,5 @@ def main(n):
 
 
 if __name__ == "__main__":
-    main(3)
+    bar = -1
+    main(25)

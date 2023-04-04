@@ -148,7 +148,7 @@ class Allocator:
             b_d = state[0]
             action = []
             for j in range(n):
-                if b_d[j][1] > 0.8:
+                if b_d[j][1] > 1.6:
                     action.append(0)
                 else:
                     action.append(1)
@@ -176,12 +176,12 @@ class Allocator:
 
 
 def main():
-    n = 3
+    n = 25
     # Allocator(100.0,200.0).allocateEnumerateBestStrategy(n)
-    # Allocator(100.0,200.0).allocateGALStrategy(n)
+    Allocator(100.0,200.0).allocateGALStrategy(n)
     # Allocator(100.0,200.0).allocateThresholdProportionalStrategy(n)
     # Allocator(100.0,200.0).allocateRandomEquipartitionStrategy(n)
-    Allocator(100.0,200.0).allocateRandomStrategy(n)
+    # Allocator(100.0,200.0).allocateRandomStrategy(n)
 
 if __name__ == "__main__":
     main()

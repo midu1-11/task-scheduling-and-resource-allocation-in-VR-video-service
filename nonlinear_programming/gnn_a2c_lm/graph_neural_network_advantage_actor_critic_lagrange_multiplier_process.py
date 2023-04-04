@@ -1,4 +1,5 @@
 from gnn_a2c_lm.graph_neural_network_advantage_actor_critic_lagrange_multiplier import *
+import time
 
 
 def readState(line, n):
@@ -31,4 +32,7 @@ def main(n):
             GALfile.write(saveContent)
 
 if __name__ == "__main__":
-    main(3)
+    startTime = time.time()
+    main(8)
+    endTime = time.time()
+    print("GAL策略用时(s)：" + str(endTime - startTime))

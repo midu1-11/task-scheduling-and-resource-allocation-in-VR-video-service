@@ -17,17 +17,22 @@ import java.util.Map;
  * 边缘服务器类继承数据中心类，默认只有一台主机，主机只有一个cpu，这个cpu可以架设多个虚拟机
  */
 public class EdgeServer extends Datacenter {
+
+    private boolean isShare;
+
     public EdgeServer(
             String name,
             DatacenterCharacteristics characteristics,
             VmAllocationPolicy vmAllocationPolicy,
             List<Storage> storageList,
-            double schedulingInterval) throws Exception {
+            double schedulingInterval,
+            boolean isShare) throws Exception {
         super(name, characteristics, vmAllocationPolicy, storageList, schedulingInterval);
+        this.isShare = isShare;
     }
 
     // 静态方法，用于创建一个边缘服务器
-    public static EdgeServer createEdgeServer(String name) {
+    public static EdgeServer createEdgeServer(String name,boolean isShare) {
 
         // 主机列表
         List<Host> hostList = new ArrayList<>();
@@ -81,7 +86,7 @@ public class EdgeServer extends Datacenter {
         EdgeServer edgeServer = null;
         try {
             edgeServer = new EdgeServer(name, characteristics, new VmAllocationPolicySimple(hostList),
-                    storageList, 0);
+                    storageList, 0,isShare);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -109,8 +114,7 @@ public class EdgeServer extends Datacenter {
         // 更新所有任务进度并做出一个无效事件调度（因为没考虑虚拟机间计算资源转移）
         super.updateCloudletProcessing();
 
-        boolean share = true;
-        if (share) {
+        if (isShare) {
             // 边缘服务器唯一一台主机
             Host host = getVmAllocationPolicy().getHostList().get(0);
             // 这台主机的所有虚拟机的现有cpu速度
