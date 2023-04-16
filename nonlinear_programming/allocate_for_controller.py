@@ -176,7 +176,7 @@ class Allocator:
 
 
 def main():
-    n = 25
+    n = 8
     # Allocator(100.0,200.0).allocateEnumerateBestStrategy(n)
     Allocator(100.0,200.0).allocateGALStrategy(n)
     # Allocator(100.0,200.0).allocateThresholdProportionalStrategy(n)

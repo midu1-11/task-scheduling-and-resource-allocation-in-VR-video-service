@@ -33,6 +33,6 @@ def main(n):
 
 if __name__ == "__main__":
     startTime = time.time()
-    main(8)
+    main(5)
     endTime = time.time()
     print("GAL策略用时(s)：" + str(endTime - startTime))

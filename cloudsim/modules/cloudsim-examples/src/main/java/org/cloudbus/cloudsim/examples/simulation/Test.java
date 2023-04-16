@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Test {
     public static void main(String[] args) throws Exception {
-        int n = 25;
+        int n = 8;
         boolean isSaveDelay = false;
         boolean isShare = true;
         int num_user = 1;   // number of grid users

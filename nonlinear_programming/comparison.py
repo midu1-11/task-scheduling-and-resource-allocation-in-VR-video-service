@@ -139,4 +139,4 @@ def main(n):
 
 if __name__ == "__main__":
     bar = -1
-    main(25)
+    main(5)

@@ -362,7 +362,7 @@ class Test():
 
 
 def main():
-    n = 5
+    n = 8
     agent = Agent(n=n, lr_critic=0.0000005, lr_actor=0.00005, batch_size=40, target_update=10, gamma=0.98, path=None)
     env = Env()
     step = 100

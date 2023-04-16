@@ -35,7 +35,7 @@ public class Client extends SimEntity {
     public void startEntity() {
         processConnect();
         // 按照给定频率产生任务
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 4000; i++) {
             schedule(getId(), 10000 * i, MyTags.SUBMIT_ONE_CLOUDLET);
         }
     }
