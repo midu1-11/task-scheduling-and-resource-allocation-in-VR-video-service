@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>HTML页面测试XHR请求 By jing_zhong</title>
+        <script>
+            //获取系统当前时间的函数
+            function gettime(){
+                var a = new Date();
+                var b = a.toLocaleTimeString();
+                var c = a.toLocaleDateString();
+                document.getElementById("currenttime").innerHTML = c+"&nbsp"+b +" By jing_zhong";
+            }
+            setInterval(function() {gettime()},1000);
+            var responsecontent;
+            function sleep(ms) {
+                let start = Date.now()
+                let end = start + ms
+                while(true) {
+                    if(Date.now() > end) {
+                    return
+                    }          
+                }
+            }
+            //发送HTTP请求的函数
+            function SendXMLHttpRequest() {
+                var time = new Date().getSeconds()*1000+new Date().getMilliseconds();
+                var pageid = document.getElementById("pageid").value;
+                var pagesize = document.getElementById("pagesize").value;
+                // 1:pose 2:face 3:hand 4:artwork 5:blur 6:sharp
+                if(!isNaN(Number(pageid)) && !isNaN(Number(pagesize))){
+                    // var xmlhttp,url="http://112.125.90.247:81/api/Log4Net/GetAsync?page="+pageid+"&intPageSize="+pagesize;
+                    var xmlhttp1,url1="http://localhost:9001/artwork.html";
+                    var xmlhttp2,url2="http://localhost:9001/pose.html";
+                    var xmlhttp3,url3="http://localhost:9001/hand.html";
+                    // var xmlhttp,url="http://43.138.30.47:9001/index.html";
+                    if (window.XMLHttpRequest){
+                        xmlhttp1 = new XMLHttpRequest();//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                        xmlhttp2 = new XMLHttpRequest();//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                        xmlhttp3 = new XMLHttpRequest();//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                    }
+                    else{
+                        xmlhttp1 = new ActiveXObject("Microsoft.XMLHTTP");// IE6, IE5 浏览器执行代码
+                        xmlhttp2 = new ActiveXObject("Microsoft.XMLHTTP");// IE6, IE5 浏览器执行代码
+                        xmlhttp3 = new ActiveXObject("Microsoft.XMLHTTP");// IE6, IE5 浏览器执行代码
+                    }
+                    xmlhttp1.onreadystatechange=function(){
+                        if (xmlhttp1.readyState==4 && xmlhttp1.status==200){
+
+                            console.log(xmlhttp1);
+
+                            time = new Date().getSeconds()*1000+new Date().getMilliseconds() - time;
+                            t1 = new Date().getSeconds()*1000+new Date().getMilliseconds();
+
+                            console.log("时间："+time);
+
+                            responsecontent = xmlhttp1.responseText;
+                            var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
+                            document.getElementById("result").innerText = "ok";
+                            document.getElementById("img1").src = responsecontent;
+                            document.getElementById("convertjson").disabled = false;
+                            document.getElementById("jsonresult").innerText = "";
+
+                            t2 = new Date().getSeconds()*1000+new Date().getMilliseconds()-t1;
+                            console.log("发送时间："+t2);
+
+                            time = new Date().getSeconds()*1000+new Date().getMilliseconds()
+                            // xmlhttp1.open("GET",url1,true);
+                            // xmlhttp1.send();
+                            // sleep(50)
+                
+                        }
+                    }
+                    xmlhttp2.onreadystatechange=function(){
+                        if (xmlhttp2.readyState==4 && xmlhttp2.status==200){
+
+                            console.log(xmlhttp2);
+
+                            time = new Date().getSeconds()*1000+new Date().getMilliseconds() - time;
+                            t1 = new Date().getSeconds()*1000+new Date().getMilliseconds();
+
+                            console.log("时间："+time);
+
+                            responsecontent = xmlhttp2.responseText;
+                            var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
+                            document.getElementById("result").innerText = "ok";
+                            document.getElementById("img2").src = responsecontent;
+                            document.getElementById("convertjson").disabled = false;
+                            document.getElementById("jsonresult").innerText = "";
+
+                            t2 = new Date().getSeconds()*1000+new Date().getMilliseconds()-t1;
+                            console.log("发送时间："+t2);
+
+                            time = new Date().getSeconds()*1000+new Date().getMilliseconds()
+                            // xmlhttp2.open("GET",url2,true);
+                            // xmlhttp2.send();
+                            // sleep(50)
+
+                        }
+                    }
+                    xmlhttp3.onreadystatechange=function(){
+                        if (xmlhttp3.readyState==4 && xmlhttp3.status==200){
+
+                            console.log(xmlhttp3);
+
+                            time = new Date().getSeconds()*1000+new Date().getMilliseconds() - time;
+                            t1 = new Date().getSeconds()*1000+new Date().getMilliseconds();
+
+                            console.log("时间："+time);
+
+                            responsecontent = xmlhttp3.responseText;
+                            var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
+                            document.getElementById("result").innerText = "ok";
+                            document.getElementById("img3").src = responsecontent;
+                            document.getElementById("convertjson").disabled = false;
+                            document.getElementById("jsonresult").innerText = "";
+
+                            t2 = new Date().getSeconds()*1000+new Date().getMilliseconds()-t1;
+                            console.log("发送时间："+t2);
+
+                            time = new Date().getSeconds()*1000+new Date().getMilliseconds()
+                            // xmlhttp3.open("GET",url3,true);
+                            // xmlhttp3.send();
+                            // sleep(50)
+                
+                        }
+                    }
+                    xmlhttp1.open("GET",url1,true);
+                    xmlhttp1.send();
+                    sleep(100)
+                    xmlhttp2.open("GET",url2,true);
+                    xmlhttp2.send();
+                    sleep(100)
+                    xmlhttp3.open("GET",url3,true);
+                    xmlhttp3.send();
+                }else{
+                    window.alert("请输入整数！");
+                    document.getElementById("result").innerText = "";
+                    document.getElementById("convertjson").disabled = true;
+                    responsecontent = "";
+                }
+
+            }
+            //对json数据进行高亮的函数
+            function syntaxHighlight(json) {
+                if (typeof json != 'string') {
+                    json = JSON.stringify(json, undefined, 2);
+                }
+                json = json.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
+                return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function(match) {
+                    var cls = 'number';
+                    if (/^"/.test(match)) {
+                        if (/:$/.test(match)) {
+                            cls = 'key';
+                        } else {
+                            cls = 'string';
+                        }
+                    } else if (/true|false/.test(match)) {
+                        cls = 'boolean';
+                    } else if (/null/.test(match)) {
+                        cls = 'null';
+                    }
+                    return '<span class="' + cls + '">' + match + '</span>';
+                });
+            }
+            //将请求结果转为json格式的函数
+            function ToJSON() {
+                console.log(responsecontent);
+                var Res = JSON.parse(responsecontent, null, 3);
+                document.getElementById("jsonresult").innerHTML = syntaxHighlight(Res);
+            }
+        </script>
+        <style>
+            pre { background-color:rgb(238, 231, 231); outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+            .string { color: rgb(22, 10, 126); }
+            .number { color: rgb(13, 214, 124); }
+            .boolean { color: rgb(225, 97, 195); }
+            .null { color: rgb(172, 167, 14); }
+            .key { color: #cf4914; }
+            #myDiv { background-image: url("https://img2.baidu.com/it/u=1721953618,4133119400&fm=253&fmt=auto&app=138&f=JPEG");}
+        </style>
+    </head>
+    <body>
+        <div id="myDiv">
+            <label id="currenttime" style="color: #AC2925; "></label>
+            <form style="color:#2572adfa;border:2px">
+                <label>请输入页数(如5)</label><input type="text" value="5" id="pageid"/><br>
+                <label>请输入页面大小(15)</label><input type="text" value="15" id="pagesize"/>
+            </form>
+            <button type="button" onclick="SendXMLHttpRequest()">1、利用XMLHttpRequest发送请求</button>
+            <p id="result" style="color:#b0a117fa"></p>
+            <button type="button" disabled="false" onclick="ToJSON()" id="convertjson">2、将请求结果转为json格式</button>
+            <img id="img1" src="f1.png" width="480" height="270">
+            <img id="img2" src="f1.png" width="480" height="270">
+            <img id="img3" src="f1.png" width="480" height="270">
+            <pre id="jsonresult" class="pre"></pre>
+        </div>
+    </body>
+</html>
