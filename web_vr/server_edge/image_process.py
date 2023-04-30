@@ -11,7 +11,7 @@ class image_processor:
 
     # 进程函数，从输入管道中取出任务，执行任务，将任务结果放入输出管道，不断循环
     def process_run(self,q):
-        print("开启任务处理进程 pid="+str(os.getpid()))
+        print("边缘服务器开启任务处理进程 pid="+str(os.getpid()))
 
         while True:
             q_in = q[0]
