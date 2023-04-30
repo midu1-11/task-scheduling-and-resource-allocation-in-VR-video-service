@@ -5,6 +5,8 @@ from image_process import *
 import socket
 import base64
 from threading import Thread
+from edge_controller import Controller
+from graph_neural_network_advantage_actor_critic_lagrange_multiplier import *
 
 NEWLINE = "\r\n"
 
@@ -35,13 +37,16 @@ class HttpServer:
         self.client_sock_list = []
         self.thread_list = []
         self.task_list = []
-        self.decision_list = [True, True, False]
+        self.resolution_list = []
+        self.decision_list = [True, True, False, True, True, True]
 
         self.count = -1
+        self.strategy = ""
         self.pose_cap = cv2.VideoCapture('pose.mp4')
         self.face_cap = cv2.VideoCapture('face.mp4')
         self.hand_cap = cv2.VideoCapture('hand.mp4')
         self.video_cap = cv2.VideoCapture('video.mp4')
+        self.controller = Controller()
 
         self.setup_socket()
         self.accept()
@@ -60,7 +65,7 @@ class HttpServer:
 
     def accept(self):
         while True:
-            for i in range(3):
+            for i in range(6):
                 (client, address) = self.sock.accept()
                 self.client_sock_list.append(client)
                 th = Thread(target=self.accept_request, args=(client,))
@@ -73,29 +78,55 @@ class HttpServer:
             cloud_message_thread = Thread(target=self.cloud_to_process)
             cloud_message_thread.start()
 
+            self.make_decision()
+
             print(self.task_list)
+            print(self.resolution_list)
+            print(self.decision_list)
+            print(self.strategy)
+
             self.pipe_to_process()
 
             while not (getattr(self.client_sock_list[0], '_closed') and getattr(self.client_sock_list[1],
                                                                                 '_closed') and getattr(
-                self.client_sock_list[2], '_closed')):
+                self.client_sock_list[2], '_closed') and getattr(self.client_sock_list[3], '_closed') and getattr(
+                self.client_sock_list[4], '_closed') and getattr(self.client_sock_list[5], '_closed')):
 
                 if not self.q_list[0][1].empty():
                     img = self.q_list[0][1].get()
                     self.send_back(img, self.client_sock_list[0])
-                    # del self.client_sock_list[0]
                 elif not self.q_list[1][1].empty():
                     img = self.q_list[1][1].get()
                     self.send_back(img, self.client_sock_list[1])
-                    # del self.client_sock_list[1]
                 elif not self.q_list[2][1].empty():
                     img = self.q_list[2][1].get()
                     self.send_back(img, self.client_sock_list[2])
-                    # del self.client_sock_list[2]
+                elif not self.q_list[3][1].empty():
+                    img = self.q_list[3][1].get()
+                    self.send_back(img, self.client_sock_list[3])
+                elif not self.q_list[4][1].empty():
+                    img = self.q_list[4][1].get()
+                    self.send_back(img, self.client_sock_list[4])
+                elif not self.q_list[5][1].empty():
+                    img = self.q_list[5][1].get()
+                    self.send_back(img, self.client_sock_list[5])
 
             self.client_sock_list = []
             self.thread_list = []
             self.task_list = []
+            self.resolution_list = []
+
+    def make_decision(self):
+        if self.strategy=="random":
+            for i in range(len(self.decision_list)):
+                if random.random()>0.5:
+                    self.decision_list[i] = True
+                else:
+                    self.decision_list[i] = False
+        elif self.strategy=="rl":
+            self.decision_list = self.controller.get_decision_list()
+        # self.decision_list = [True,True,True,True,True,True]
+        # self.decision_list = [False, False, False, False, False, False]
 
     def accept_request(self, client_sock):
         data = client_sock.recv(4096)
@@ -106,7 +137,9 @@ class HttpServer:
         if len(request_words) == 0:
             return
         requested_file = request_words[1][1:]
-        self.task_list.append(requested_file.split(".")[0])
+        self.task_list.append((requested_file.split(".")[0]).split("|")[0])
+        self.resolution_list.append((requested_file.split(".")[0]).split("|")[1])
+        self.strategy = (requested_file.split(".")[0]).split("|")[2]
 
     def cloud_to_process(self):
         s = socket.socket()  # 创建TCP/IP套接字
@@ -116,7 +149,7 @@ class HttpServer:
 
         send_data = ""
         for i in range(len(self.task_list)):
-            send_data += self.task_list[i] + ":" + str(self.decision_list[i])
+            send_data += self.task_list[i] + ":" + str(self.decision_list[i]) + ":" + self.resolution_list[i]
             if i != len(self.task_list) - 1:
                 send_data += " "
         s.send(send_data.encode())  # 发送TCP数据
@@ -126,18 +159,26 @@ class HttpServer:
             if decision == False:
                 cloud_num += 1
 
-        for i in range(cloud_num):
-            data = b""
-            data_length = int(s.recv(1024).decode())
+        # data_list = []
 
+        for i in range(cloud_num):
+            s.send(b"ready")
+            data_length = int(s.recv(1024).decode())
+            # print("data_length "+str(data_length))
+
+            data = b""
             while True:
-                recvData = s.recv(1024)
+                recvData = s.recv(2056)
                 data += recvData
-                if len(data) == data_length:
+                if len(data) >= data_length:
                     break
-            # print(" ")
-            # recvData = s.recv(999999999)
-            self.send_back_from_cloud(data[1:], self.client_sock_list[data[0] - 48])
+
+            # data_list.append(data)
+            th = Thread(target=self.send_back_from_cloud,args=(data[1:], self.client_sock_list[data[0] - 48]))
+            th.start()
+
+        # for data in data_list:
+        #     self.send_back_from_cloud(data[1:], self.client_sock_list[data[0] - 48])
 
         s.close()
 
@@ -147,21 +188,39 @@ class HttpServer:
             if self.decision_list[i] == True:
                 if self.task_list[i] == "pose":
                     img = self.pose_cap.read()[1]
+                    x_size = int(self.resolution_list[i].split("x")[0])
+                    y_size = int(self.resolution_list[i].split("x")[1])
+                    img = cv2.resize(img, (x_size, y_size))
                     self.q_list[i][0].put(("pose", img))
                 elif self.task_list[i] == "face":
                     img = self.face_cap.read()[1]
+                    x_size = int(self.resolution_list[i].split("x")[0])
+                    y_size = int(self.resolution_list[i].split("x")[1])
+                    img = cv2.resize(img, (x_size, y_size))
                     self.q_list[i][0].put(("face", img))
                 elif self.task_list[i] == "hand":
                     img = self.hand_cap.read()[1]
+                    x_size = int(self.resolution_list[i].split("x")[0])
+                    y_size = int(self.resolution_list[i].split("x")[1])
+                    img = cv2.resize(img, (x_size, y_size))
                     self.q_list[i][0].put(("hand", img))
                 elif self.task_list[i] == "artwork":
                     img = self.video_cap.read()[1]
+                    x_size = int(self.resolution_list[i].split("x")[0])
+                    y_size = int(self.resolution_list[i].split("x")[1])
+                    img = cv2.resize(img, (x_size, y_size))
                     self.q_list[i][0].put(("artwork", img))
                 elif self.task_list[i] == "blur":
                     img = self.video_cap.read()[1]
+                    x_size = int(self.resolution_list[i].split("x")[0])
+                    y_size = int(self.resolution_list[i].split("x")[1])
+                    img = cv2.resize(img, (x_size, y_size))
                     self.q_list[i][0].put(("blur", img))
                 elif self.task_list[i] == "sharp":
                     img = self.video_cap.read()[1]
+                    x_size = int(self.resolution_list[i].split("x")[0])
+                    y_size = int(self.resolution_list[i].split("x")[1])
+                    img = cv2.resize(img, (x_size, y_size))
                     self.q_list[i][0].put(("sharp", img))
 
     def send_back(self, img, client_sock):
@@ -258,9 +317,9 @@ class ResponseBuilder:
 
 
 if __name__ == '__main__':
-    q_list = [[Queue() for j in range(2)] for i in range(3)]
+    q_list = [[Queue() for j in range(2)] for i in range(6)]
 
-    for i in range(3):
+    for i in range(6):
         process = Process(target=image_processor().process_run, args=(q_list[i],))
         process.start()
 

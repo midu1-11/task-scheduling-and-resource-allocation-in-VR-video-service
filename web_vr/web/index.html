@@ -2,14 +2,18 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>HTML页面测试XHR请求 By jing_zhong</title>
+        <title>多用户VR视频客户端模拟</title>
         <script>
+            start_time = 989;
+            delay_img1 = 0;
+            delay_img2 = 0;
+            delay_img3 = 0;
             //获取系统当前时间的函数
             function gettime(){
                 var a = new Date();
                 var b = a.toLocaleTimeString();
                 var c = a.toLocaleDateString();
-                document.getElementById("currenttime").innerHTML = c+"&nbsp"+b +" By jing_zhong";
+                document.getElementById("currenttime").innerHTML = "多用户VR视频客户端模拟  "+c+"&nbsp"+b;
             }
             setInterval(function() {gettime()},1000);
             var responsecontent;
@@ -25,24 +29,277 @@
             //发送HTTP请求的函数
             function SendXMLHttpRequest() {
                 var time = new Date().getSeconds()*1000+new Date().getMilliseconds();
-                var pageid = document.getElementById("pageid").value;
-                var pagesize = document.getElementById("pagesize").value;
+                // var pageid = document.getElementById("pageid").value;
+                // var pagesize = document.getElementById("pagesize").value;
                 // 1:pose 2:face 3:hand 4:artwork 5:blur 6:sharp
-                if(!isNaN(Number(pageid)) && !isNaN(Number(pagesize))){
+                if(true){
                     // var xmlhttp,url="http://112.125.90.247:81/api/Log4Net/GetAsync?page="+pageid+"&intPageSize="+pagesize;
-                    var xmlhttp1,url1="http://localhost:9001/artwork.html";
-                    var xmlhttp2,url2="http://localhost:9001/pose.html";
-                    var xmlhttp3,url3="http://localhost:9001/hand.html";
+                    switch(document.getElementById("task-select1").value) 
+                    {
+                        case "骨骼检测":
+                            task1 = "pose";
+                            break;
+                        case "面部关键点检测":
+                            task1 = "face";
+                            break;
+                        case "手部检测":
+                            task1 = "hand";
+                            break;
+                        case "原图":
+                            task1 = "artwork";
+                            break;
+                        case "模糊":
+                            task1 = "blur";
+                            break;
+                        case "锐化":
+                            task1 = "sharp";
+                            break;
+                    }
+                    switch(document.getElementById("task-select2").value) 
+                    {
+                        case "骨骼检测":
+                            task2 = "pose";
+                            break;
+                        case "面部关键点检测":
+                            task2 = "face";
+                            break;
+                        case "手部检测":
+                            task2 = "hand";
+                            break;
+                        case "原图":
+                            task2 = "artwork";
+                            break;
+                        case "模糊":
+                            task2 = "blur";
+                            break;
+                        case "锐化":
+                            task2 = "sharp";
+                            break;
+                    }
+                    switch(document.getElementById("task-select3").value) 
+                    {
+                        case "骨骼检测":
+                            task3 = "pose";
+                            break;
+                        case "面部关键点检测":
+                            task3 = "face";
+                            break;
+                        case "手部检测":
+                            task3 = "hand";
+                            break;
+                        case "原图":
+                            task3 = "artwork";
+                            break;
+                        case "模糊":
+                            task3 = "blur";
+                            break;
+                        case "锐化":
+                            task3 = "sharp";
+                            break;
+                    }
+                    switch(document.getElementById("task-select4").value) 
+                    {
+                        case "骨骼检测":
+                            task4 = "pose";
+                            break;
+                        case "面部关键点检测":
+                            task4 = "face";
+                            break;
+                        case "手部检测":
+                            task4 = "hand";
+                            break;
+                        case "原图":
+                            task4 = "artwork";
+                            break;
+                        case "模糊":
+                            task4 = "blur";
+                            break;
+                        case "锐化":
+                            task4 = "sharp";
+                            break;
+                    }
+                    switch(document.getElementById("task-select5").value) 
+                    {
+                        case "骨骼检测":
+                            task5 = "pose";
+                            break;
+                        case "面部关键点检测":
+                            task5 = "face";
+                            break;
+                        case "手部检测":
+                            task5 = "hand";
+                            break;
+                        case "原图":
+                            task5 = "artwork";
+                            break;
+                        case "模糊":
+                            task5 = "blur";
+                            break;
+                        case "锐化":
+                            task5 = "sharp";
+                            break;
+                    }
+                    switch(document.getElementById("task-select6").value) 
+                    {
+                        case "骨骼检测":
+                            task6 = "pose";
+                            break;
+                        case "面部关键点检测":
+                            task6 = "face";
+                            break;
+                        case "手部检测":
+                            task6 = "hand";
+                            break;
+                        case "原图":
+                            task6 = "artwork";
+                            break;
+                        case "模糊":
+                            task6 = "blur";
+                            break;
+                        case "锐化":
+                            task6 = "sharp";
+                            break;
+                    }
+
+                    switch(document.getElementById("resolution-select1").value) 
+                    {
+                        case "3840x2160":
+                            resolution1 = "3840x2160";
+                            break;
+                        case "1920x1080":
+                            resolution1 = "1920x1080";
+                            break;
+                        case "1280x720":
+                            resolution1 = "1280x720";
+                            break;
+                        case "853x480":
+                            resolution1 = "853x480";
+                            break;
+                        case "284x160":
+                            resolution1 = "284x160";
+                            break;
+                    }
+                    switch(document.getElementById("resolution-select2").value) 
+                    {
+                        case "3840x2160":
+                            resolution2 = "3840x2160";
+                            break;
+                        case "1920x1080":
+                            resolution2 = "1920x1080";
+                            break;
+                        case "1280x720":
+                            resolution2 = "1280x720";
+                            break;
+                        case "853x480":
+                            resolution2 = "853x480";
+                            break;
+                        case "284x160":
+                            resolution2 = "284x160";
+                            break;
+                    }
+                    switch(document.getElementById("resolution-select3").value) 
+                    {
+                        case "3840x2160":
+                            resolution3 = "3840x2160";
+                            break;
+                        case "1920x1080":
+                            resolution3 = "1920x1080";
+                            break;
+                        case "1280x720":
+                            resolution3 = "1280x720";
+                            break;
+                        case "853x480":
+                            resolution3 = "853x480";
+                            break;
+                        case "284x160":
+                            resolution3 = "284x160";
+                            break;
+                    }
+                    switch(document.getElementById("resolution-select4").value) 
+                    {
+                        case "3840x2160":
+                            resolution4 = "3840x2160";
+                            break;
+                        case "1920x1080":
+                            resolution4 = "1920x1080";
+                            break;
+                        case "1280x720":
+                            resolution4 = "1280x720";
+                            break;
+                        case "853x480":
+                            resolution4 = "853x480";
+                            break;
+                        case "284x160":
+                            resolution4 = "284x160";
+                            break;
+                    }
+                    switch(document.getElementById("resolution-select5").value) 
+                    {
+                        case "3840x2160":
+                            resolution5 = "3840x2160";
+                            break;
+                        case "1920x1080":
+                            resolution5 = "1920x1080";
+                            break;
+                        case "1280x720":
+                            resolution5 = "1280x720";
+                            break;
+                        case "853x480":
+                            resolution5 = "853x480";
+                            break;
+                        case "284x160":
+                            resolution5 = "284x160";
+                            break;
+                    }
+                    switch(document.getElementById("resolution-select6").value) 
+                    {
+                        case "3840x2160":
+                            resolution6 = "3840x2160";
+                            break;
+                        case "1920x1080":
+                            resolution6 = "1920x1080";
+                            break;
+                        case "1280x720":
+                            resolution6 = "1280x720";
+                            break;
+                        case "853x480":
+                            resolution6 = "853x480";
+                            break;
+                        case "284x160":
+                            resolution6 = "284x160";
+                            break;
+                    }
+                    switch(document.getElementById("strategy-select").value) 
+                    {
+                        case "随机策略":
+                            strategy = "random";
+                            break;
+                        case "强化学习":
+                            strategy = "rl";
+                            break;
+                    }
+                    var xmlhttp1,url1="http://localhost:9001/"+task1+"|"+resolution1+"|"+strategy+".html";
+                    var xmlhttp2,url2="http://localhost:9001/"+task2+"|"+resolution2+"|"+strategy+".html";
+                    var xmlhttp3,url3="http://localhost:9001/"+task3+"|"+resolution3+"|"+strategy+".html";
+                    var xmlhttp4,url4="http://localhost:9001/"+task4+"|"+resolution4+"|"+strategy+".html";
+                    var xmlhttp5,url5="http://localhost:9001/"+task5+"|"+resolution5+"|"+strategy+".html";
+                    var xmlhttp6,url6="http://localhost:9001/"+task6+"|"+resolution6+"|"+strategy+".html";
                     // var xmlhttp,url="http://43.138.30.47:9001/index.html";
                     if (window.XMLHttpRequest){
                         xmlhttp1 = new XMLHttpRequest();//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
                         xmlhttp2 = new XMLHttpRequest();//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
                         xmlhttp3 = new XMLHttpRequest();//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                        xmlhttp4 = new XMLHttpRequest();//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                        xmlhttp5 = new XMLHttpRequest();//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+                        xmlhttp6 = new XMLHttpRequest();//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
                     }
                     else{
                         xmlhttp1 = new ActiveXObject("Microsoft.XMLHTTP");// IE6, IE5 浏览器执行代码
                         xmlhttp2 = new ActiveXObject("Microsoft.XMLHTTP");// IE6, IE5 浏览器执行代码
                         xmlhttp3 = new ActiveXObject("Microsoft.XMLHTTP");// IE6, IE5 浏览器执行代码
+                        xmlhttp4 = new ActiveXObject("Microsoft.XMLHTTP");// IE6, IE5 浏览器执行代码
+                        xmlhttp5 = new ActiveXObject("Microsoft.XMLHTTP");// IE6, IE5 浏览器执行代码
+                        xmlhttp6 = new ActiveXObject("Microsoft.XMLHTTP");// IE6, IE5 浏览器执行代码
                     }
                     xmlhttp1.onreadystatechange=function(){
                         if (xmlhttp1.readyState==4 && xmlhttp1.status==200){
@@ -55,11 +312,18 @@
                             console.log("时间："+time);
 
                             responsecontent = xmlhttp1.responseText;
-                            var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
-                            document.getElementById("result").innerText = "ok";
+                            // var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
                             document.getElementById("img1").src = responsecontent;
-                            document.getElementById("convertjson").disabled = false;
+                            // document.getElementById("convertjson").disabled = false;
                             document.getElementById("jsonresult").innerText = "";
+                            delay_img1 = new Date().getSeconds()*1000+new Date().getMilliseconds() - start_time;
+                            document.getElementById("delay1").innerHTML = delay_img1 + "ms";
+
+                            if(delay_img1!=0 && delay_img2!=0 && delay_img3!=0 && delay_img4!=0 && delay_img5!=0 && delay_img6!=0)
+                            {
+                                delay_sum = delay_img1+delay_img2+delay_img3+delay_img4+delay_img5+delay_img6;
+                                document.getElementById("jsonresult").innerText = "本时隙所有VR客户端延迟之和为："+delay_sum+"ms";
+                            }
 
                             t2 = new Date().getSeconds()*1000+new Date().getMilliseconds()-t1;
                             console.log("发送时间："+t2);
@@ -82,11 +346,18 @@
                             console.log("时间："+time);
 
                             responsecontent = xmlhttp2.responseText;
-                            var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
-                            document.getElementById("result").innerText = "ok";
+                            // var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
                             document.getElementById("img2").src = responsecontent;
-                            document.getElementById("convertjson").disabled = false;
+                            // document.getElementById("convertjson").disabled = false;
                             document.getElementById("jsonresult").innerText = "";
+                            delay_img2 = new Date().getSeconds()*1000+new Date().getMilliseconds() - start_time;
+                            document.getElementById("delay2").innerHTML = delay_img2 + "ms";
+
+                            if(delay_img1!=0 && delay_img2!=0 && delay_img3!=0 && delay_img4!=0 && delay_img5!=0 && delay_img6!=0)
+                            {
+                                delay_sum = delay_img1+delay_img2+delay_img3+delay_img4+delay_img5+delay_img6;
+                                document.getElementById("jsonresult").innerText = "本时隙所有VR客户端延迟之和为："+delay_sum+"ms";
+                            }
 
                             t2 = new Date().getSeconds()*1000+new Date().getMilliseconds()-t1;
                             console.log("发送时间："+t2);
@@ -109,11 +380,120 @@
                             console.log("时间："+time);
 
                             responsecontent = xmlhttp3.responseText;
-                            var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
-                            document.getElementById("result").innerText = "ok";
+                            // var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
                             document.getElementById("img3").src = responsecontent;
-                            document.getElementById("convertjson").disabled = false;
+                            // document.getElementById("convertjson").disabled = false;
                             document.getElementById("jsonresult").innerText = "";
+                            delay_img3 = new Date().getSeconds()*1000+new Date().getMilliseconds() - start_time;
+                            document.getElementById("delay3").innerHTML = delay_img3 + "ms";
+
+                            if(delay_img1!=0 && delay_img2!=0 && delay_img3!=0 && delay_img4!=0 && delay_img5!=0 && delay_img6!=0)
+                            {
+                                delay_sum = delay_img1+delay_img2+delay_img3+delay_img4+delay_img5+delay_img6;
+                                document.getElementById("jsonresult").innerText = "本时隙所有VR客户端延迟之和为："+delay_sum+"ms";
+                            }
+
+                            t2 = new Date().getSeconds()*1000+new Date().getMilliseconds()-t1;
+                            console.log("发送时间："+t2);
+
+                            time = new Date().getSeconds()*1000+new Date().getMilliseconds()
+                            // xmlhttp3.open("GET",url3,true);
+                            // xmlhttp3.send();
+                            // sleep(50)
+                
+                        }
+                    }
+                    xmlhttp4.onreadystatechange=function(){
+                        if (xmlhttp4.readyState==4 && xmlhttp4.status==200){
+
+                            console.log(xmlhttp4);
+
+                            time = new Date().getSeconds()*1000+new Date().getMilliseconds() - time;
+                            t1 = new Date().getSeconds()*1000+new Date().getMilliseconds();
+
+                            console.log("时间："+time);
+
+                            responsecontent = xmlhttp4.responseText;
+                            // var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
+                            document.getElementById("img4").src = responsecontent;
+                            // document.getElementById("convertjson").disabled = false;
+                            document.getElementById("jsonresult").innerText = "";
+                            delay_img4 = new Date().getSeconds()*1000+new Date().getMilliseconds() - start_time;
+                            document.getElementById("delay4").innerHTML = delay_img4 + "ms";
+
+                            if(delay_img1!=0 && delay_img2!=0 && delay_img3!=0 && delay_img4!=0 && delay_img5!=0 && delay_img6!=0)
+                            {
+                                delay_sum = delay_img1+delay_img2+delay_img3+delay_img4+delay_img5+delay_img6;
+                                document.getElementById("jsonresult").innerText = "本时隙所有VR客户端延迟之和为："+delay_sum+"ms";
+                            }
+
+                            t2 = new Date().getSeconds()*1000+new Date().getMilliseconds()-t1;
+                            console.log("发送时间："+t2);
+
+                            time = new Date().getSeconds()*1000+new Date().getMilliseconds()
+                            // xmlhttp3.open("GET",url3,true);
+                            // xmlhttp3.send();
+                            // sleep(50)
+                
+                        }
+                    }
+                    xmlhttp5.onreadystatechange=function(){
+                        if (xmlhttp5.readyState==4 && xmlhttp5.status==200){
+
+                            console.log(xmlhttp5);
+
+                            time = new Date().getSeconds()*1000+new Date().getMilliseconds() - time;
+                            t1 = new Date().getSeconds()*1000+new Date().getMilliseconds();
+
+                            console.log("时间："+time);
+
+                            responsecontent = xmlhttp5.responseText;
+                            // var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
+                            document.getElementById("img5").src = responsecontent;
+                            // document.getElementById("convertjson").disabled = false;
+                            document.getElementById("jsonresult").innerText = "";
+                            delay_img5 = new Date().getSeconds()*1000+new Date().getMilliseconds() - start_time;
+                            document.getElementById("delay5").innerHTML = delay_img5 + "ms";
+
+                            if(delay_img1!=0 && delay_img2!=0 && delay_img3!=0 && delay_img4!=0 && delay_img5!=0 && delay_img6!=0)
+                            {
+                                delay_sum = delay_img1+delay_img2+delay_img3+delay_img4+delay_img5+delay_img6;
+                                document.getElementById("jsonresult").innerText = "本时隙所有VR客户端延迟之和为："+delay_sum+"ms";
+                            }
+
+                            t2 = new Date().getSeconds()*1000+new Date().getMilliseconds()-t1;
+                            console.log("发送时间："+t2);
+
+                            time = new Date().getSeconds()*1000+new Date().getMilliseconds()
+                            // xmlhttp3.open("GET",url3,true);
+                            // xmlhttp3.send();
+                            // sleep(50)
+                
+                        }
+                    }
+                    xmlhttp6.onreadystatechange=function(){
+                        if (xmlhttp6.readyState==4 && xmlhttp6.status==200){
+
+                            console.log(xmlhttp6);
+
+                            time = new Date().getSeconds()*1000+new Date().getMilliseconds() - time;
+                            t1 = new Date().getSeconds()*1000+new Date().getMilliseconds();
+
+                            console.log("时间："+time);
+
+                            responsecontent = xmlhttp6.responseText;
+                            // var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
+                            document.getElementById("img6").src = responsecontent;
+                            // document.getElementById("convertjson").disabled = false;
+                            document.getElementById("jsonresult").innerText = "";
+                            delay_img6 = new Date().getSeconds()*1000+new Date().getMilliseconds() - start_time;
+                            document.getElementById("delay6").innerHTML = delay_img6 + "ms";
+
+                            if(delay_img1!=0 && delay_img2!=0 && delay_img3!=0 && delay_img4!=0 && delay_img5!=0 && delay_img6!=0)
+                            {
+                                delay_sum = delay_img1+delay_img2+delay_img3+delay_img4+delay_img5+delay_img6;
+                                document.getElementById("jsonresult").innerText = "本时隙所有VR客户端延迟之和为："+delay_sum+"ms";
+                            }
 
                             t2 = new Date().getSeconds()*1000+new Date().getMilliseconds()-t1;
                             console.log("发送时间："+t2);
@@ -133,6 +513,22 @@
                     sleep(100)
                     xmlhttp3.open("GET",url3,true);
                     xmlhttp3.send();
+                    sleep(100)
+                    xmlhttp4.open("GET",url4,true);
+                    xmlhttp4.send();
+                    sleep(100)
+                    xmlhttp5.open("GET",url5,true);
+                    xmlhttp5.send();
+                    sleep(100)
+                    xmlhttp6.open("GET",url6,true);
+                    xmlhttp6.send();
+                    start_time = new Date().getSeconds()*1000+new Date().getMilliseconds();
+                    delay_img1 = 0;
+                    delay_img2 = 0;
+                    delay_img3 = 0;
+                    delay_img4 = 0;
+                    delay_img5 = 0;
+                    delay_img6 = 0;
                 }else{
                     window.alert("请输入整数！");
                     document.getElementById("result").innerText = "";
@@ -177,23 +573,169 @@
             .boolean { color: rgb(225, 97, 195); }
             .null { color: rgb(172, 167, 14); }
             .key { color: #cf4914; }
-            #myDiv { background-image: url("https://img2.baidu.com/it/u=1721953618,4133119400&fm=253&fmt=auto&app=138&f=JPEG");}
+            body { background-image: url("https://img2.baidu.com/it/u=1721953618,4133119400&fm=253&fmt=auto&app=138&f=JPEG");
+            background-repeat:no-repeat;
+            background-attachment:fixed;
+            background-size:100% 100%; 
+        }
         </style>
     </head>
     <body>
         <div id="myDiv">
-            <label id="currenttime" style="color: #AC2925; "></label>
-            <form style="color:#2572adfa;border:2px">
-                <label>请输入页数(如5)</label><input type="text" value="5" id="pageid"/><br>
-                <label>请输入页面大小(15)</label><input type="text" value="15" id="pagesize"/>
-            </form>
-            <button type="button" onclick="SendXMLHttpRequest()">1、利用XMLHttpRequest发送请求</button>
-            <p id="result" style="color:#b0a117fa"></p>
-            <button type="button" disabled="false" onclick="ToJSON()" id="convertjson">2、将请求结果转为json格式</button>
-            <img id="img1" src="f1.png" width="480" height="270">
-            <img id="img2" src="f1.png" width="480" height="270">
-            <img id="img3" src="f1.png" width="480" height="270">
-            <pre id="jsonresult" class="pre"></pre>
+            <div style="text-align: center">
+                <label id="currenttime" style="color: #AC2925; font-size: xx-large;"></label><br/>
+            </div>
+            <div>
+                <button type="button" onclick="SendXMLHttpRequest()" style="float:left; font-size:medium">提交所有任务给边缘中心控制器</button>
+                <select  id="strategy-select" onchange="selectcity()" style="float:left; font-size: medium;">
+                    <option>---请选择策略---</option>
+                    <option>随机策略</option>
+                    <option>强化学习</option>
+                </select>
+            </div>
+            <div id="box" style="margin-top: 40px;">
+                <div id="left" style="float:left; margin-left:120px">
+                    <div>
+                        <select  id="task-select1" onchange="selectcity()" style="float:left; font-size:medium;">
+                            <option>---请选择任务类型---</option>
+                            <option>骨骼检测</option>
+                            <option>面部关键点检测</option>
+                            <option>手部检测</option>
+                            <option>原图</option>
+                            <option>模糊</option>
+                            <option>锐化</option>
+                        </select>
+                        <select  id="resolution-select1" onchange="selectcity()" style="float:left;font-size: medium;">
+                            <option>---请选择分辨率---</option>
+                            <option>3840x2160</option>
+                            <option>1920x1080</option>
+                            <option>1280x720</option>
+                            <option>853x480</option>
+                            <option>284x160</option>
+                        </select>
+                        <label id="delay1" style="color: #AC2925; font-size: large;float:left; margin-left: 40px;">100ms</label>
+                    </div>
+                    <img id="img1" src="f1.png" width="480" height="270">
+                </div>
+                <div id="center" style="float:left; margin-left:180px">
+                    <div>
+                        <select  id="task-select2" onchange="selectcity()" style="float:left;font-size: medium;">
+                            <option>---请选择任务类型---</option>
+                            <option>骨骼检测</option>
+                            <option>面部关键点检测</option>
+                            <option>手部检测</option>
+                            <option>原图</option>
+                            <option>模糊</option>
+                            <option>锐化</option>
+                        </select>
+                        <select  id="resolution-select2" onchange="selectcity()" style="float:left;font-size: medium;">
+                            <option>---请选择分辨率---</option>
+                            <option>3840x2160</option>
+                            <option>1920x1080</option>
+                            <option>1280x720</option>
+                            <option>853x480</option>
+                            <option>284x160</option>
+                        </select>
+                        <label id="delay2" style="color: #AC2925; font-size: large;float:left; margin-left: 40px;">100ms</label>
+                    </div>
+                    <img id="img2" src="f1.png" width="480" height="270">
+                </div>
+                <div id="right" style="float:right; margin-right:120px">
+                    <div>
+                        <select  id="task-select3" onchange="selectcity()" style="float:left;font-size: medium;">
+                            <option>---请选择任务类型---</option>
+                            <option>骨骼检测</option>
+                            <option>面部关键点检测</option>
+                            <option>手部检测</option>
+                            <option>原图</option>
+                            <option>模糊</option>
+                            <option>锐化</option>
+                        </select>
+                        <select  id="resolution-select3" onchange="selectcity()" style="float:left;font-size: medium;">
+                            <option>---请选择分辨率---</option>
+                            <option>3840x2160</option>
+                            <option>1920x1080</option>
+                            <option>1280x720</option>
+                            <option>853x480</option>
+                            <option>284x160</option>
+                        </select>
+                        <label id="delay3" style="color: #AC2925; font-size: large;float:left; margin-left: 40px;">100ms</label>
+                    </div>
+                    <img id="img3" src="f1.png" width="480" height="270">
+                </div>
+            </div><br/>
+            <div id="box" style="margin-top: 0px;">
+                <div id="left" style="float:left; margin-left:120px">
+                    <div>
+                        <select  id="task-select4" onchange="selectcity()" style="float:left;font-size: medium;">
+                            <option>---请选择任务类型---</option>
+                            <option>骨骼检测</option>
+                            <option>面部关键点检测</option>
+                            <option>手部检测</option>
+                            <option>原图</option>
+                            <option>模糊</option>
+                            <option>锐化</option>
+                        </select>
+                        <select  id="resolution-select4" onchange="selectcity()" style="float:left;font-size: medium;">
+                            <option>---请选择分辨率---</option>
+                            <option>3840x2160</option>
+                            <option>1920x1080</option>
+                            <option>1280x720</option>
+                            <option>853x480</option>
+                            <option>284x160</option>
+                        </select>
+                        <label id="delay4" style="color: #AC2925; font-size: large;float:left; margin-left: 40px;">100ms</label>
+                    </div>
+                    <img id="img4" src="f1.png" width="480" height="270">
+                </div>
+                <div id="center" style="float:left; margin-left:180px">
+                    <div>
+                        <select  id="task-select5" onchange="selectcity()" style="float:left;font-size: medium;">
+                            <option>---请选择任务类型---</option>
+                            <option>骨骼检测</option>
+                            <option>面部关键点检测</option>
+                            <option>手部检测</option>
+                            <option>原图</option>
+                            <option>模糊</option>
+                            <option>锐化</option>
+                        </select>
+                        <select  id="resolution-select5" onchange="selectcity()" style="float:left;font-size: medium;">
+                            <option>---请选择分辨率---</option>
+                            <option>3840x2160</option>
+                            <option>1920x1080</option>
+                            <option>1280x720</option>
+                            <option>853x480</option>
+                            <option>284x160</option>
+                        </select>
+                        <label id="delay5" style="color: #AC2925; font-size: large;float:left; margin-left: 40px;">100ms</label>
+                    </div>
+                    <img id="img5" src="f1.png" width="480" height="270">
+                </div>
+                <div id="right" style="float:right; margin-right:120px">
+                    <div>
+                        <select  id="task-select6" onchange="selectcity()" style="float:left;font-size: medium;">
+                            <option>---请选择任务类型---</option>
+                            <option>骨骼检测</option>
+                            <option>面部关键点检测</option>
+                            <option>手部检测</option>
+                            <option>原图</option>
+                            <option>模糊</option>
+                            <option>锐化</option>
+                        </select>
+                        <select  id="resolution-select6" onchange="selectcity()" style="float:left;font-size: medium;">
+                            <option>---请选择分辨率---</option>
+                            <option>3840x2160</option>
+                            <option>1920x1080</option>
+                            <option>1280x720</option>
+                            <option>853x480</option>
+                            <option>284x160</option>
+                        </select>
+                        <label id="delay6" style="color: #AC2925; font-size: large;float:left; margin-left: 40px;">100ms</label>
+                    </div>
+                    <img id="img6" src="f1.png" width="480" height="270">
+                </div>
+            </div>
+            <pre id="jsonresult" class="pre" style="margin-top: 600px; height: 260px;margin-left: 40px;margin-right: 40px;font-size: x-large;">blank</pre>
         </div>
     </body>
 </html>

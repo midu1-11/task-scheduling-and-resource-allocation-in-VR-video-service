@@ -1,26 +1,19 @@
 import os
-
 import cv2
 from cvzone.PoseModule import PoseDetector
 from cvzone.FaceMeshModule import FaceMeshDetector
-from cvzone.FaceDetectionModule import FaceDetector
 from cvzone.HandTrackingModule import HandDetector
-import time
 
 
 class image_processor:
     def __init__(self):
         pass
-        # self.poseDetector = PoseDetector()
-        # self.faceMeshDetector = FaceMeshDetector(maxFaces=1)
-        # self.handDetector = HandDetector(detectionCon=0.8, maxHands=2)
 
+    # 进程函数，从输入管道中取出任务，执行任务，将任务结果放入输出管道，不断循环
     def process_run(self,q):
-        print("开启进程 pid="+str(os.getpid()))
-        p = 0
+        print("开启任务处理进程 pid="+str(os.getpid()))
 
         while True:
-            p += 1
             q_in = q[0]
             q_out = q[1]
             res = q_in.get()
@@ -39,18 +32,4 @@ class image_processor:
                 q_out.put(cv2.blur(img, (25, 25)))
             elif type == "sharp":
                 q_out.put(cv2.convertScaleAbs(cv2.Sobel(img, cv2.CV_32F, 1, 0)))
-
-    def process_one_img(self,img,type):
-        if type=="pose":
-            return self.poseDetector.findPose(img)
-        elif type=="face":
-            return self.faceMeshDetector.findFaceMesh(img)[0]
-        elif type=="hand":
-            return self.handDetector.findHands(img)[1]
-        elif type=="artwork":
-            return img
-        elif type=="blur":
-            return cv2.blur(img, (25, 25))
-        elif type=="sharp":
-            return cv2.convertScaleAbs(cv2.Sobel(img, cv2.CV_32F, 1, 0))
 
