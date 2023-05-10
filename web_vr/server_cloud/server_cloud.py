@@ -11,13 +11,16 @@ class CloudServer:
         self.task_list = []
         self.decision_list = []
         self.resolution_list = []
+        self.angle_list = []
         self.q_list = q_list
         self.result_list = []
 
-        self.pose_cap = cv2.VideoCapture('pose.mp4')
-        self.face_cap = cv2.VideoCapture('face.mp4')
-        self.hand_cap = cv2.VideoCapture('hand.mp4')
-        self.video_cap = cv2.VideoCapture('video.mp4')
+        self.animation_cap = cv2.VideoCapture('animation.mp4')
+        self.dive_cap = cv2.VideoCapture('dive.mp4')
+        self.dinosaur_cap = cv2.VideoCapture('dinosaur.mp4')
+        self.eagle_cap = cv2.VideoCapture('eagle.mp4')
+        self.Iceland_cap = cv2.VideoCapture('Iceland.mp4')
+        self.zombie_cap = cv2.VideoCapture('zombie.mp4')
 
         # 配置网络
         self.net_set()
@@ -43,9 +46,10 @@ class CloudServer:
                 self.task_list.append(one_data[0])
                 self.decision_list.append(one_data[1])
                 self.resolution_list.append(one_data[2])
+                self.angle_list.append(one_data[3])
 
             # 打印接收到的任务信息
-            print(self.task_list, self.decision_list,self.resolution_list)
+            print(self.task_list, self.decision_list, self.resolution_list)
             for decision in self.decision_list:
                 if decision == "True":
                     self.result_list.append(True)
@@ -112,6 +116,7 @@ class CloudServer:
             self.task_list = []
             self.decision_list = []
             self.resolution_list = []
+            self.angle_list = []
             self.result_list = []
 
     def exit_false(self, result_list):
@@ -125,42 +130,24 @@ class CloudServer:
 
         for i in range(len(self.result_list)):
             if self.result_list[i] == False:
-                if self.task_list[i] == "pose":
-                    img = self.pose_cap.read()[1]
-                    x_size = int(self.resolution_list[i].split("x")[0])
-                    y_size = int(self.resolution_list[i].split("x")[1])
-                    img = cv2.resize(img, (x_size, y_size))
-                    self.q_list[i][0].put(("pose", img))
-                elif self.task_list[i] == "face":
-                    img = self.face_cap.read()[1]
-                    x_size = int(self.resolution_list[i].split("x")[0])
-                    y_size = int(self.resolution_list[i].split("x")[1])
-                    img = cv2.resize(img, (x_size, y_size))
-                    self.q_list[i][0].put(("face", img))
-                elif self.task_list[i] == "hand":
-                    img = self.hand_cap.read()[1]
-                    x_size = int(self.resolution_list[i].split("x")[0])
-                    y_size = int(self.resolution_list[i].split("x")[1])
-                    img = cv2.resize(img, (x_size, y_size))
-                    self.q_list[i][0].put(("hand", img))
-                elif self.task_list[i] == "artwork":
-                    img = self.video_cap.read()[1]
-                    x_size = int(self.resolution_list[i].split("x")[0])
-                    y_size = int(self.resolution_list[i].split("x")[1])
-                    img = cv2.resize(img, (x_size, y_size))
-                    self.q_list[i][0].put(("artwork", img))
-                elif self.task_list[i] == "blur":
-                    img = self.video_cap.read()[1]
-                    x_size = int(self.resolution_list[i].split("x")[0])
-                    y_size = int(self.resolution_list[i].split("x")[1])
-                    img = cv2.resize(img, (x_size, y_size))
-                    self.q_list[i][0].put(("blur", img))
-                elif self.task_list[i] == "sharp":
-                    img = self.video_cap.read()[1]
-                    x_size = int(self.resolution_list[i].split("x")[0])
-                    y_size = int(self.resolution_list[i].split("x")[1])
-                    img = cv2.resize(img, (x_size, y_size))
-                    self.q_list[i][0].put(("sharp", img))
+                if self.task_list[i] == "animation":
+                    img = self.animation_cap.read()[1]
+                    self.q_list[i][0].put((self.resolution_list[i].split("x")[1], self.angle_list[i], img))
+                elif self.task_list[i] == "dive":
+                    img = self.dive_cap.read()[1]
+                    self.q_list[i][0].put((self.resolution_list[i].split("x")[1], self.angle_list[i], img))
+                elif self.task_list[i] == "dinosaur":
+                    img = self.dinosaur_cap.read()[1]
+                    self.q_list[i][0].put((self.resolution_list[i].split("x")[1], self.angle_list[i], img))
+                elif self.task_list[i] == "eagle":
+                    img = self.eagle_cap.read()[1]
+                    self.q_list[i][0].put((self.resolution_list[i].split("x")[1], self.angle_list[i], img))
+                elif self.task_list[i] == "Iceland":
+                    img = self.Iceland_cap.read()[1]
+                    self.q_list[i][0].put((self.resolution_list[i].split("x")[1], self.angle_list[i], img))
+                elif self.task_list[i] == "zombie":
+                    img = self.zombie_cap.read()[1]
+                    self.q_list[i][0].put((self.resolution_list[i].split("x")[1], self.angle_list[i], img))
 
 
 if __name__ == "__main__":

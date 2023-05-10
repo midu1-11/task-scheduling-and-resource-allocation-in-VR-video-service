@@ -13,7 +13,7 @@
                 var a = new Date();
                 var b = a.toLocaleTimeString();
                 var c = a.toLocaleDateString();
-                document.getElementById("currenttime").innerHTML = "多用户VR视频客户端模拟  "+c+"&nbsp"+b;
+                document.getElementById("currenttime").innerHTML = "多用户全景VR视频渲染客户端模拟  "+c+"&nbsp"+b;
             }
             setInterval(function() {gettime()},1000);
             var responsecontent;
@@ -29,143 +29,136 @@
             //发送HTTP请求的函数
             function SendXMLHttpRequest() {
                 var time = new Date().getSeconds()*1000+new Date().getMilliseconds();
-                // var pageid = document.getElementById("pageid").value;
-                // var pagesize = document.getElementById("pagesize").value;
-                // 1:pose 2:face 3:hand 4:artwork 5:blur 6:sharp
                 if(true){
-                    // var xmlhttp,url="http://112.125.90.247:81/api/Log4Net/GetAsync?page="+pageid+"&intPageSize="+pagesize;
                     switch(document.getElementById("task-select1").value) 
                     {
-                        case "骨骼检测":
-                            task1 = "pose";
+                        case "海绵宝宝":
+                            task1 = "animation";
                             break;
-                        case "面部关键点检测":
-                            task1 = "face";
+                        case "热带潜水":
+                            task1 = "dive";
                             break;
-                        case "手部检测":
-                            task1 = "hand";
+                        case "侏罗纪世界":
+                            task1 = "dinosaur";
                             break;
-                        case "原图":
-                            task1 = "artwork";
+                        case "老鹰飞行":
+                            task1 = "eagle";
                             break;
-                        case "模糊":
-                            task1 = "blur";
+                        case "冰岛风景":
+                            task1 = "Iceland";
                             break;
-                        case "锐化":
-                            task1 = "sharp";
+                        case "丧尸爆发":
+                            task1 = "zombie";
                             break;
                     }
                     switch(document.getElementById("task-select2").value) 
                     {
-                        case "骨骼检测":
-                            task2 = "pose";
+                        case "海绵宝宝":
+                            task2 = "animation";
                             break;
-                        case "面部关键点检测":
-                            task2 = "face";
+                        case "热带潜水":
+                            task2 = "dive";
                             break;
-                        case "手部检测":
-                            task2 = "hand";
+                        case "侏罗纪世界":
+                            task2 = "dinosaur";
                             break;
-                        case "原图":
-                            task2 = "artwork";
+                        case "老鹰飞行":
+                            task2 = "eagle";
                             break;
-                        case "模糊":
-                            task2 = "blur";
+                        case "冰岛风景":
+                            task2 = "Iceland";
                             break;
-                        case "锐化":
-                            task2 = "sharp";
+                        case "丧尸爆发":
+                            task2 = "zombie";
                             break;
                     }
                     switch(document.getElementById("task-select3").value) 
                     {
-                        case "骨骼检测":
-                            task3 = "pose";
+                        case "海绵宝宝":
+                            task3 = "animation";
                             break;
-                        case "面部关键点检测":
-                            task3 = "face";
+                        case "热带潜水":
+                            task3 = "dive";
                             break;
-                        case "手部检测":
-                            task3 = "hand";
+                        case "侏罗纪世界":
+                            task3 = "dinosaur";
                             break;
-                        case "原图":
-                            task3 = "artwork";
+                        case "老鹰飞行":
+                            task3 = "eagle";
                             break;
-                        case "模糊":
-                            task3 = "blur";
+                        case "冰岛风景":
+                            task3 = "Iceland";
                             break;
-                        case "锐化":
-                            task3 = "sharp";
+                        case "丧尸爆发":
+                            task3 = "zombie";
                             break;
                     }
                     switch(document.getElementById("task-select4").value) 
                     {
-                        case "骨骼检测":
-                            task4 = "pose";
+                        case "海绵宝宝":
+                            task4 = "animation";
                             break;
-                        case "面部关键点检测":
-                            task4 = "face";
+                        case "热带潜水":
+                            task4 = "dive";
                             break;
-                        case "手部检测":
-                            task4 = "hand";
+                        case "侏罗纪世界":
+                            task4 = "dinosaur";
                             break;
-                        case "原图":
-                            task4 = "artwork";
+                        case "老鹰飞行":
+                            task4 = "eagle";
                             break;
-                        case "模糊":
-                            task4 = "blur";
+                        case "冰岛风景":
+                            task4 = "Iceland";
                             break;
-                        case "锐化":
-                            task4 = "sharp";
+                        case "丧尸爆发":
+                            task4 = "zombie";
                             break;
                     }
                     switch(document.getElementById("task-select5").value) 
                     {
-                        case "骨骼检测":
-                            task5 = "pose";
+                        case "海绵宝宝":
+                            task5 = "animation";
                             break;
-                        case "面部关键点检测":
-                            task5 = "face";
+                        case "热带潜水":
+                            task5 = "dive";
                             break;
-                        case "手部检测":
-                            task5 = "hand";
+                        case "侏罗纪世界":
+                            task5 = "dinosaur";
                             break;
-                        case "原图":
-                            task5 = "artwork";
+                        case "老鹰飞行":
+                            task5 = "eagle";
                             break;
-                        case "模糊":
-                            task5 = "blur";
+                        case "冰岛风景":
+                            task5 = "Iceland";
                             break;
-                        case "锐化":
-                            task5 = "sharp";
+                        case "丧尸爆发":
+                            task5 = "zombie";
                             break;
                     }
                     switch(document.getElementById("task-select6").value) 
                     {
-                        case "骨骼检测":
-                            task6 = "pose";
+                        case "海绵宝宝":
+                            task6 = "animation";
                             break;
-                        case "面部关键点检测":
-                            task6 = "face";
+                        case "热带潜水":
+                            task6 = "dive";
                             break;
-                        case "手部检测":
-                            task6 = "hand";
+                        case "侏罗纪世界":
+                            task6 = "dinosaur";
                             break;
-                        case "原图":
-                            task6 = "artwork";
+                        case "老鹰飞行":
+                            task6 = "eagle";
                             break;
-                        case "模糊":
-                            task6 = "blur";
+                        case "冰岛风景":
+                            task6 = "Iceland";
                             break;
-                        case "锐化":
-                            task6 = "sharp";
+                        case "丧尸爆发":
+                            task6 = "zombie";
                             break;
                     }
 
                     switch(document.getElementById("resolution-select1").value) 
                     {
-                        case "3840x2160":
-                            resolution1 = "3840x2160";
-                            break;
                         case "1920x1080":
                             resolution1 = "1920x1080";
                             break;
@@ -175,15 +168,12 @@
                         case "853x480":
                             resolution1 = "853x480";
                             break;
-                        case "284x160":
-                            resolution1 = "284x160";
+                        case "426x240":
+                            resolution1 = "426x240";
                             break;
                     }
                     switch(document.getElementById("resolution-select2").value) 
                     {
-                        case "3840x2160":
-                            resolution2 = "3840x2160";
-                            break;
                         case "1920x1080":
                             resolution2 = "1920x1080";
                             break;
@@ -193,15 +183,12 @@
                         case "853x480":
                             resolution2 = "853x480";
                             break;
-                        case "284x160":
-                            resolution2 = "284x160";
+                        case "426x240":
+                            resolution2 = "426x240";
                             break;
                     }
                     switch(document.getElementById("resolution-select3").value) 
                     {
-                        case "3840x2160":
-                            resolution3 = "3840x2160";
-                            break;
                         case "1920x1080":
                             resolution3 = "1920x1080";
                             break;
@@ -211,15 +198,12 @@
                         case "853x480":
                             resolution3 = "853x480";
                             break;
-                        case "284x160":
-                            resolution3 = "284x160";
+                        case "426x240":
+                            resolution3 = "426x240";
                             break;
                     }
                     switch(document.getElementById("resolution-select4").value) 
                     {
-                        case "3840x2160":
-                            resolution4 = "3840x2160";
-                            break;
                         case "1920x1080":
                             resolution4 = "1920x1080";
                             break;
@@ -229,15 +213,12 @@
                         case "853x480":
                             resolution4 = "853x480";
                             break;
-                        case "284x160":
-                            resolution4 = "284x160";
+                        case "426x240":
+                            resolution4 = "426x240";
                             break;
                     }
                     switch(document.getElementById("resolution-select5").value) 
                     {
-                        case "3840x2160":
-                            resolution5 = "3840x2160";
-                            break;
                         case "1920x1080":
                             resolution5 = "1920x1080";
                             break;
@@ -247,15 +228,12 @@
                         case "853x480":
                             resolution5 = "853x480";
                             break;
-                        case "284x160":
-                            resolution5 = "284x160";
+                        case "426x240":
+                            resolution5 = "426x240";
                             break;
                     }
                     switch(document.getElementById("resolution-select6").value) 
                     {
-                        case "3840x2160":
-                            resolution6 = "3840x2160";
-                            break;
                         case "1920x1080":
                             resolution6 = "1920x1080";
                             break;
@@ -265,26 +243,155 @@
                         case "853x480":
                             resolution6 = "853x480";
                             break;
-                        case "284x160":
-                            resolution6 = "284x160";
+                        case "426x240":
+                            resolution6 = "426x240";
+                            break;
+                    }
+                    switch(document.getElementById("angle-select1").value) 
+                    {
+                        case "渲染视角-前":
+                            angle1 = "forth";
+                            break;
+                        case "渲染视角-后":
+                            angle1 = "back";
+                            break;
+                        case "渲染视角-左":
+                            angle1 = "left";
+                            break;
+                        case "渲染视角-右":
+                            angle1 = "right";
+                            break;
+                        case "渲染视角-上":
+                            angle1 = "up";
+                            break;
+                        case "渲染视角-下":
+                            angle1 = "down";
+                            break;
+                    }
+                    switch(document.getElementById("angle-select2").value) 
+                    {
+                        case "渲染视角-前":
+                            angle2 = "forth";
+                            break;
+                        case "渲染视角-后":
+                            angle2 = "back";
+                            break;
+                        case "渲染视角-左":
+                            angle2 = "left";
+                            break;
+                        case "渲染视角-右":
+                            angle2 = "right";
+                            break;
+                        case "渲染视角-上":
+                            angle2 = "up";
+                            break;
+                        case "渲染视角-下":
+                            angle2 = "down";
+                            break;
+                    }
+                    switch(document.getElementById("angle-select3").value) 
+                    {
+                        case "渲染视角-前":
+                            angle3 = "forth";
+                            break;
+                        case "渲染视角-后":
+                            angle3 = "back";
+                            break;
+                        case "渲染视角-左":
+                            angle3 = "left";
+                            break;
+                        case "渲染视角-右":
+                            angle3 = "right";
+                            break;
+                        case "渲染视角-上":
+                            angle3 = "up";
+                            break;
+                        case "渲染视角-下":
+                            angle3 = "down";
+                            break;
+                    }
+                    switch(document.getElementById("angle-select4").value) 
+                    {
+                        case "渲染视角-前":
+                            angle4 = "forth";
+                            break;
+                        case "渲染视角-后":
+                            angle4 = "back";
+                            break;
+                        case "渲染视角-左":
+                            angle4 = "left";
+                            break;
+                        case "渲染视角-右":
+                            angle4 = "right";
+                            break;
+                        case "渲染视角-上":
+                            angle4 = "up";
+                            break;
+                        case "渲染视角-下":
+                            angle4 = "down";
+                            break;
+                    }
+                    switch(document.getElementById("angle-select5").value) 
+                    {
+                        case "渲染视角-前":
+                            angle5 = "forth";
+                            break;
+                        case "渲染视角-后":
+                            angle5 = "back";
+                            break;
+                        case "渲染视角-左":
+                            angle5 = "left";
+                            break;
+                        case "渲染视角-右":
+                            angle5 = "right";
+                            break;
+                        case "渲染视角-上":
+                            angle5 = "up";
+                            break;
+                        case "渲染视角-下":
+                            angle5 = "down";
+                            break;
+                    }
+                    switch(document.getElementById("angle-select6").value) 
+                    {
+                        case "渲染视角-前":
+                            angle6 = "forth";
+                            break;
+                        case "渲染视角-后":
+                            angle6 = "back";
+                            break;
+                        case "渲染视角-左":
+                            angle6 = "left";
+                            break;
+                        case "渲染视角-右":
+                            angle6 = "right";
+                            break;
+                        case "渲染视角-上":
+                            angle6 = "up";
+                            break;
+                        case "渲染视角-下":
+                            angle6 = "down";
                             break;
                     }
                     switch(document.getElementById("strategy-select").value) 
                     {
-                        case "随机策略":
+                        case "随机均分策略":
                             strategy = "random";
+                            break;
+                        case "阈值比例策略":
+                            strategy = "threshold";
                             break;
                         case "基于强化学习的在线策略":
                             strategy = "rl";
                             break;
                     }
-                    var xmlhttp1,url1="http://localhost:9001/"+task1+"|"+resolution1+"|"+strategy+".html";
-                    var xmlhttp2,url2="http://localhost:9001/"+task2+"|"+resolution2+"|"+strategy+".html";
-                    var xmlhttp3,url3="http://localhost:9001/"+task3+"|"+resolution3+"|"+strategy+".html";
-                    var xmlhttp4,url4="http://localhost:9001/"+task4+"|"+resolution4+"|"+strategy+".html";
-                    var xmlhttp5,url5="http://localhost:9001/"+task5+"|"+resolution5+"|"+strategy+".html";
-                    var xmlhttp6,url6="http://localhost:9001/"+task6+"|"+resolution6+"|"+strategy+".html";
-                    // var xmlhttp,url="http://43.138.30.47:9001/index.html";
+                    
+                    var xmlhttp1,url1="http://localhost:9001/"+task1+"|"+resolution1+"|"+angle1+"|"+strategy+".html";
+                    var xmlhttp2,url2="http://localhost:9001/"+task2+"|"+resolution2+"|"+angle2+"|"+strategy+".html";
+                    var xmlhttp3,url3="http://localhost:9001/"+task3+"|"+resolution3+"|"+angle3+"|"+strategy+".html";
+                    var xmlhttp4,url4="http://localhost:9001/"+task4+"|"+resolution4+"|"+angle4+"|"+strategy+".html";
+                    var xmlhttp5,url5="http://localhost:9001/"+task5+"|"+resolution5+"|"+angle5+"|"+strategy+".html";
+                    var xmlhttp6,url6="http://localhost:9001/"+task6+"|"+resolution6+"|"+angle6+"|"+strategy+".html";
                     if (window.XMLHttpRequest){
                         xmlhttp1 = new XMLHttpRequest();//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
                         xmlhttp2 = new XMLHttpRequest();//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
@@ -312,12 +419,9 @@
                             console.log("时间："+time);
 
                             responsecontent = xmlhttp1.responseText;
-                            // var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
                             document.getElementById("img1").src = responsecontent;
-                            // document.getElementById("convertjson").disabled = false;
                             document.getElementById("jsonresult").innerText = "";
                             delay_img1 = new Date().getSeconds()*1000+new Date().getMilliseconds() - start_time;
-                            document.getElementById("delay1").innerHTML = delay_img1 + "ms";
 
                             if(delay_img1!=0 && delay_img2!=0 && delay_img3!=0 && delay_img4!=0 && delay_img5!=0 && delay_img6!=0)
                             {
@@ -329,9 +433,6 @@
                             console.log("发送时间："+t2);
 
                             time = new Date().getSeconds()*1000+new Date().getMilliseconds()
-                            // xmlhttp1.open("GET",url1,true);
-                            // xmlhttp1.send();
-                            // sleep(50)
                 
                         }
                     }
@@ -346,12 +447,9 @@
                             console.log("时间："+time);
 
                             responsecontent = xmlhttp2.responseText;
-                            // var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
                             document.getElementById("img2").src = responsecontent;
-                            // document.getElementById("convertjson").disabled = false;
                             document.getElementById("jsonresult").innerText = "";
                             delay_img2 = new Date().getSeconds()*1000+new Date().getMilliseconds() - start_time;
-                            document.getElementById("delay2").innerHTML = delay_img2 + "ms";
 
                             if(delay_img1!=0 && delay_img2!=0 && delay_img3!=0 && delay_img4!=0 && delay_img5!=0 && delay_img6!=0)
                             {
@@ -363,9 +461,6 @@
                             console.log("发送时间："+t2);
 
                             time = new Date().getSeconds()*1000+new Date().getMilliseconds()
-                            // xmlhttp2.open("GET",url2,true);
-                            // xmlhttp2.send();
-                            // sleep(50)
 
                         }
                     }
@@ -380,12 +475,9 @@
                             console.log("时间："+time);
 
                             responsecontent = xmlhttp3.responseText;
-                            // var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
                             document.getElementById("img3").src = responsecontent;
-                            // document.getElementById("convertjson").disabled = false;
                             document.getElementById("jsonresult").innerText = "";
                             delay_img3 = new Date().getSeconds()*1000+new Date().getMilliseconds() - start_time;
-                            document.getElementById("delay3").innerHTML = delay_img3 + "ms";
 
                             if(delay_img1!=0 && delay_img2!=0 && delay_img3!=0 && delay_img4!=0 && delay_img5!=0 && delay_img6!=0)
                             {
@@ -397,9 +489,6 @@
                             console.log("发送时间："+t2);
 
                             time = new Date().getSeconds()*1000+new Date().getMilliseconds()
-                            // xmlhttp3.open("GET",url3,true);
-                            // xmlhttp3.send();
-                            // sleep(50)
                 
                         }
                     }
@@ -414,12 +503,9 @@
                             console.log("时间："+time);
 
                             responsecontent = xmlhttp4.responseText;
-                            // var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
                             document.getElementById("img4").src = responsecontent;
-                            // document.getElementById("convertjson").disabled = false;
                             document.getElementById("jsonresult").innerText = "";
                             delay_img4 = new Date().getSeconds()*1000+new Date().getMilliseconds() - start_time;
-                            document.getElementById("delay4").innerHTML = delay_img4 + "ms";
 
                             if(delay_img1!=0 && delay_img2!=0 && delay_img3!=0 && delay_img4!=0 && delay_img5!=0 && delay_img6!=0)
                             {
@@ -431,9 +517,6 @@
                             console.log("发送时间："+t2);
 
                             time = new Date().getSeconds()*1000+new Date().getMilliseconds()
-                            // xmlhttp3.open("GET",url3,true);
-                            // xmlhttp3.send();
-                            // sleep(50)
                 
                         }
                     }
@@ -448,12 +531,9 @@
                             console.log("时间："+time);
 
                             responsecontent = xmlhttp5.responseText;
-                            // var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
                             document.getElementById("img5").src = responsecontent;
-                            // document.getElementById("convertjson").disabled = false;
                             document.getElementById("jsonresult").innerText = "";
                             delay_img5 = new Date().getSeconds()*1000+new Date().getMilliseconds() - start_time;
-                            document.getElementById("delay5").innerHTML = delay_img5 + "ms";
 
                             if(delay_img1!=0 && delay_img2!=0 && delay_img3!=0 && delay_img4!=0 && delay_img5!=0 && delay_img6!=0)
                             {
@@ -465,9 +545,6 @@
                             console.log("发送时间："+t2);
 
                             time = new Date().getSeconds()*1000+new Date().getMilliseconds()
-                            // xmlhttp3.open("GET",url3,true);
-                            // xmlhttp3.send();
-                            // sleep(50)
                 
                         }
                     }
@@ -482,12 +559,9 @@
                             console.log("时间："+time);
 
                             responsecontent = xmlhttp6.responseText;
-                            // var Res = "成功获取HTTP响应,得到第"+pageid+"页共"+pagesize+"个结果!\n"+responsecontent;
                             document.getElementById("img6").src = responsecontent;
-                            // document.getElementById("convertjson").disabled = false;
                             document.getElementById("jsonresult").innerText = "";
                             delay_img6 = new Date().getSeconds()*1000+new Date().getMilliseconds() - start_time;
-                            document.getElementById("delay6").innerHTML = delay_img6 + "ms";
 
                             if(delay_img1!=0 && delay_img2!=0 && delay_img3!=0 && delay_img4!=0 && delay_img5!=0 && delay_img6!=0)
                             {
@@ -499,9 +573,6 @@
                             console.log("发送时间："+t2);
 
                             time = new Date().getSeconds()*1000+new Date().getMilliseconds()
-                            // xmlhttp3.open("GET",url3,true);
-                            // xmlhttp3.send();
-                            // sleep(50)
                 
                         }
                     }
@@ -589,7 +660,8 @@
                 <button type="button" onclick="SendXMLHttpRequest()" style="float:left; font-size:medium">提交所有任务给边缘中心控制器</button>
                 <select  id="strategy-select" onchange="selectcity()" style="float:left; font-size: medium;">
                     <option>---请选择策略---</option>
-                    <option>随机策略</option>
+                    <option>随机均分策略</option>
+                    <option>阈值比例策略</option>
                     <option>基于强化学习的在线策略</option>
                 </select>
             </div>
@@ -597,69 +669,90 @@
                 <div id="left" style="float:left; margin-left:120px">
                     <div>
                         <select  id="task-select1" onchange="selectcity()" style="float:left; font-size:medium;">
-                            <option>---请选择任务类型---</option>
-                            <option>骨骼检测</option>
-                            <option>面部关键点检测</option>
-                            <option>手部检测</option>
-                            <option>原图</option>
-                            <option>模糊</option>
-                            <option>锐化</option>
+                            <option>---请选择全景视频---</option>
+                            <option>海绵宝宝</option>
+                            <option>热带潜水</option>
+                            <option>侏罗纪世界</option>
+                            <option>老鹰飞行</option>
+                            <option>冰岛风景</option>
+                            <option>丧尸爆发</option>
                         </select>
                         <select  id="resolution-select1" onchange="selectcity()" style="float:left;font-size: medium;">
                             <option>---请选择分辨率---</option>
-                            <option>3840x2160</option>
                             <option>1920x1080</option>
                             <option>1280x720</option>
                             <option>853x480</option>
-                            <option>284x160</option>
+                            <option>426x240</option>
                         </select>
-                        <label id="delay1" style="color: #AC2925; font-size: large;float:left; margin-left: 40px;">100ms</label>
+                        <select  id="angle-select1" onchange="selectcity()" style="float:left;font-size: medium;">
+                            <option>---请选择渲染视角---</option>
+                            <option>渲染视角-前</option>
+                            <option>渲染视角-后</option>
+                            <option>渲染视角-左</option>
+                            <option>渲染视角-右</option>
+                            <option>渲染视角-上</option>
+                            <option>渲染视角-下</option>
+                        </select>
                     </div>
                     <img id="img1" src="f1.png" width="480" height="270">
                 </div>
                 <div id="center" style="float:left; margin-left:180px">
                     <div>
                         <select  id="task-select2" onchange="selectcity()" style="float:left;font-size: medium;">
-                            <option>---请选择任务类型---</option>
-                            <option>骨骼检测</option>
-                            <option>面部关键点检测</option>
-                            <option>手部检测</option>
-                            <option>原图</option>
-                            <option>模糊</option>
-                            <option>锐化</option>
+                            <option>---请选择全景视频---</option>
+                            <option>海绵宝宝</option>
+                            <option>热带潜水</option>
+                            <option>侏罗纪世界</option>
+                            <option>老鹰飞行</option>
+                            <option>冰岛风景</option>
+                            <option>丧尸爆发</option>
                         </select>
                         <select  id="resolution-select2" onchange="selectcity()" style="float:left;font-size: medium;">
                             <option>---请选择分辨率---</option>
-                            <option>3840x2160</option>
                             <option>1920x1080</option>
                             <option>1280x720</option>
                             <option>853x480</option>
-                            <option>284x160</option>
+                            <option>426x240</option>
                         </select>
-                        <label id="delay2" style="color: #AC2925; font-size: large;float:left; margin-left: 40px;">100ms</label>
+                        <select  id="angle-select2" onchange="selectcity()" style="float:left;font-size: medium;">
+                            <option>---请选择渲染视角---</option>
+                            <option>渲染视角-前</option>
+                            <option>渲染视角-后</option>
+                            <option>渲染视角-左</option>
+                            <option>渲染视角-右</option>
+                            <option>渲染视角-上</option>
+                            <option>渲染视角-下</option>
+                        </select>
                     </div>
                     <img id="img2" src="f1.png" width="480" height="270">
                 </div>
                 <div id="right" style="float:right; margin-right:120px">
                     <div>
                         <select  id="task-select3" onchange="selectcity()" style="float:left;font-size: medium;">
-                            <option>---请选择任务类型---</option>
-                            <option>骨骼检测</option>
-                            <option>面部关键点检测</option>
-                            <option>手部检测</option>
-                            <option>原图</option>
-                            <option>模糊</option>
-                            <option>锐化</option>
+                            <option>---请选择全景视频---</option>
+                            <option>海绵宝宝</option>
+                            <option>热带潜水</option>
+                            <option>侏罗纪世界</option>
+                            <option>老鹰飞行</option>
+                            <option>冰岛风景</option>
+                            <option>丧尸爆发</option>
                         </select>
                         <select  id="resolution-select3" onchange="selectcity()" style="float:left;font-size: medium;">
                             <option>---请选择分辨率---</option>
-                            <option>3840x2160</option>
                             <option>1920x1080</option>
                             <option>1280x720</option>
                             <option>853x480</option>
-                            <option>284x160</option>
+                            <option>426x240</option>
                         </select>
-                        <label id="delay3" style="color: #AC2925; font-size: large;float:left; margin-left: 40px;">100ms</label>
+                        <select  id="angle-select3" onchange="selectcity()" style="float:left;font-size: medium;">
+                            <option>---请选择渲染视角---</option>
+                            <option>渲染视角-前</option>
+                            <option>渲染视角-后</option>
+                            <option>渲染视角-左</option>
+                            <option>渲染视角-右</option>
+                            <option>渲染视角-上</option>
+                            <option>渲染视角-下</option>
+                        </select>
                     </div>
                     <img id="img3" src="f1.png" width="480" height="270">
                 </div>
@@ -668,69 +761,90 @@
                 <div id="left" style="float:left; margin-left:120px">
                     <div>
                         <select  id="task-select4" onchange="selectcity()" style="float:left;font-size: medium;">
-                            <option>---请选择任务类型---</option>
-                            <option>骨骼检测</option>
-                            <option>面部关键点检测</option>
-                            <option>手部检测</option>
-                            <option>原图</option>
-                            <option>模糊</option>
-                            <option>锐化</option>
+                            <option>---请选择全景视频---</option>
+                            <option>海绵宝宝</option>
+                            <option>热带潜水</option>
+                            <option>侏罗纪世界</option>
+                            <option>老鹰飞行</option>
+                            <option>冰岛风景</option>
+                            <option>丧尸爆发</option>
                         </select>
                         <select  id="resolution-select4" onchange="selectcity()" style="float:left;font-size: medium;">
                             <option>---请选择分辨率---</option>
-                            <option>3840x2160</option>
                             <option>1920x1080</option>
                             <option>1280x720</option>
                             <option>853x480</option>
-                            <option>284x160</option>
+                            <option>426x240</option>
                         </select>
-                        <label id="delay4" style="color: #AC2925; font-size: large;float:left; margin-left: 40px;">100ms</label>
+                        <select  id="angle-select4" onchange="selectcity()" style="float:left;font-size: medium;">
+                            <option>---请选择渲染视角---</option>
+                            <option>渲染视角-前</option>
+                            <option>渲染视角-后</option>
+                            <option>渲染视角-左</option>
+                            <option>渲染视角-右</option>
+                            <option>渲染视角-上</option>
+                            <option>渲染视角-下</option>
+                        </select>
                     </div>
                     <img id="img4" src="f1.png" width="480" height="270">
                 </div>
                 <div id="center" style="float:left; margin-left:180px">
                     <div>
                         <select  id="task-select5" onchange="selectcity()" style="float:left;font-size: medium;">
-                            <option>---请选择任务类型---</option>
-                            <option>骨骼检测</option>
-                            <option>面部关键点检测</option>
-                            <option>手部检测</option>
-                            <option>原图</option>
-                            <option>模糊</option>
-                            <option>锐化</option>
+                            <option>---请选择全景视频---</option>
+                            <option>海绵宝宝</option>
+                            <option>热带潜水</option>
+                            <option>侏罗纪世界</option>
+                            <option>老鹰飞行</option>
+                            <option>冰岛风景</option>
+                            <option>丧尸爆发</option>
                         </select>
                         <select  id="resolution-select5" onchange="selectcity()" style="float:left;font-size: medium;">
                             <option>---请选择分辨率---</option>
-                            <option>3840x2160</option>
                             <option>1920x1080</option>
                             <option>1280x720</option>
                             <option>853x480</option>
-                            <option>284x160</option>
+                            <option>426x240</option>
                         </select>
-                        <label id="delay5" style="color: #AC2925; font-size: large;float:left; margin-left: 40px;">100ms</label>
+                        <select  id="angle-select5" onchange="selectcity()" style="float:left;font-size: medium;">
+                            <option>---请选择渲染视角---</option>
+                            <option>渲染视角-前</option>
+                            <option>渲染视角-后</option>
+                            <option>渲染视角-左</option>
+                            <option>渲染视角-右</option>
+                            <option>渲染视角-上</option>
+                            <option>渲染视角-下</option>
+                        </select>
                     </div>
                     <img id="img5" src="f1.png" width="480" height="270">
                 </div>
                 <div id="right" style="float:right; margin-right:120px">
                     <div>
                         <select  id="task-select6" onchange="selectcity()" style="float:left;font-size: medium;">
-                            <option>---请选择任务类型---</option>
-                            <option>骨骼检测</option>
-                            <option>面部关键点检测</option>
-                            <option>手部检测</option>
-                            <option>原图</option>
-                            <option>模糊</option>
-                            <option>锐化</option>
+                            <option>---请选择全景视频---</option>
+                            <option>海绵宝宝</option>
+                            <option>热带潜水</option>
+                            <option>侏罗纪世界</option>
+                            <option>老鹰飞行</option>
+                            <option>冰岛风景</option>
+                            <option>丧尸爆发</option>
                         </select>
                         <select  id="resolution-select6" onchange="selectcity()" style="float:left;font-size: medium;">
                             <option>---请选择分辨率---</option>
-                            <option>3840x2160</option>
                             <option>1920x1080</option>
                             <option>1280x720</option>
                             <option>853x480</option>
-                            <option>284x160</option>
+                            <option>426x240</option>
                         </select>
-                        <label id="delay6" style="color: #AC2925; font-size: large;float:left; margin-left: 40px;">100ms</label>
+                        <select  id="angle-select6" onchange="selectcity()" style="float:left;font-size: medium;">
+                            <option>---请选择渲染视角---</option>
+                            <option>渲染视角-前</option>
+                            <option>渲染视角-后</option>
+                            <option>渲染视角-左</option>
+                            <option>渲染视角-右</option>
+                            <option>渲染视角-上</option>
+                            <option>渲染视角-下</option>
+                        </select>
                     </div>
                     <img id="img6" src="f1.png" width="480" height="270">
                 </div>

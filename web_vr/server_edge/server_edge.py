@@ -27,7 +27,8 @@ def get_file_contents(file_name):
 
 class HttpServer:
     def __init__(self, q_list, host="localhost", port=9001):
-        # 监听本地9001端口，等待来自客户端浏览器的TCP连接，基于TCP连接采用HTTP通信
+        # 监听9001端口，等待来自客户端浏览器的TCP连接，基于TCP连接采用HTTP通信
+        # 这里IP本地测试填localhost，局域网测试填内网IP
         print(f"Server started. Listening at http://{host}:{port}/")
 
         self.host = host
@@ -38,14 +39,18 @@ class HttpServer:
         self.thread_list = []
         self.task_list = []
         self.resolution_list = []
+        self.angle_list = []
         self.decision_list = [True, True, False, True, True, True]
 
         self.count = -1
         self.strategy = ""
-        self.pose_cap = cv2.VideoCapture('pose.mp4')
-        self.face_cap = cv2.VideoCapture('face.mp4')
-        self.hand_cap = cv2.VideoCapture('hand.mp4')
-        self.video_cap = cv2.VideoCapture('video.mp4')
+        self.animation_cap = cv2.VideoCapture('animation.mp4')
+        self.dive_cap = cv2.VideoCapture('dive.mp4')
+        self.dinosaur_cap = cv2.VideoCapture('dinosaur.mp4')
+        self.eagle_cap = cv2.VideoCapture('eagle.mp4')
+        self.Iceland_cap = cv2.VideoCapture('Iceland.mp4')
+        self.zombie_cap = cv2.VideoCapture('zombie.mp4')
+
         self.controller = Controller()
 
         # 设置socket
@@ -89,6 +94,7 @@ class HttpServer:
 
             print(self.task_list)
             print(self.resolution_list)
+            print(self.angle_list)
             print(self.decision_list)
             print(self.strategy)
 
@@ -126,20 +132,27 @@ class HttpServer:
             self.thread_list = []
             self.task_list = []
             self.resolution_list = []
+            self.angle_list = []
 
     def make_decision(self):
         # 随机调度任务
-        if self.strategy=="random":
+        if self.strategy == "random":
             for i in range(len(self.decision_list)):
-                if random.random()>0.5:
+                if random.random() > 0.5:
                     self.decision_list[i] = True
                 else:
                     self.decision_list[i] = False
         # 按照已经训练好的模型调度任务
-        elif self.strategy=="rl":
-            self.decision_list = self.controller.get_decision_list()
-        # self.decision_list = [True,True,True,True,True,True]
-        # self.decision_list = [False, False, False, False, False, False]
+        elif self.strategy == "rl":
+            self.decision_list = self.controller.get_decision_list(self.resolution_list)
+        # 按照阈值调度任务，1080和720发到云，480和240发到边缘
+        elif self.strategy == "threshold":
+            self.decision_list = []
+            for i in range(len(self.resolution_list)):
+                if (int)(self.resolution_list[i].split("x")[1]) >= 720:
+                    self.decision_list.append(False)
+                else:
+                    self.decision_list.append(True)
 
     # 接收一个任务信息，包括任务类型、分辨率、处理策略
     def accept_request(self, client_sock):
@@ -153,7 +166,8 @@ class HttpServer:
         requested_file = request_words[1][1:]
         self.task_list.append((requested_file.split(".")[0]).split("|")[0])
         self.resolution_list.append((requested_file.split(".")[0]).split("|")[1])
-        self.strategy = (requested_file.split(".")[0]).split("|")[2]
+        self.angle_list.append((requested_file.split(".")[0]).split("|")[2])
+        self.strategy = (requested_file.split(".")[0]).split("|")[3]
 
     def cloud_to_process(self):
         s = socket.socket()
@@ -163,7 +177,8 @@ class HttpServer:
 
         send_data = ""
         for i in range(len(self.task_list)):
-            send_data += self.task_list[i] + ":" + str(self.decision_list[i]) + ":" + self.resolution_list[i]
+            send_data += self.task_list[i] + ":" + str(self.decision_list[i]) + ":" + self.resolution_list[i] + ":" + \
+                         self.angle_list[i]
             if i != len(self.task_list) - 1:
                 send_data += " "
         s.send(send_data.encode())  # 发送任务信息
@@ -189,7 +204,7 @@ class HttpServer:
                     break
 
             # 开一个线程用于将一张图片数据通过HTTP协议发送到客户端
-            th = Thread(target=self.send_back_from_cloud,args=(data[1:], self.client_sock_list[data[0] - 48]))
+            th = Thread(target=self.send_back_from_cloud, args=(data[1:], self.client_sock_list[data[0] - 48]))
             th.start()
 
         s.close()
@@ -198,44 +213,25 @@ class HttpServer:
 
         for i in range(len(self.decision_list)):
             if self.decision_list[i] == True:
-                if self.task_list[i] == "pose":
-                    img = self.pose_cap.read()[1]
-                    # 按照客户端要求调整图片分辨率
-                    x_size = int(self.resolution_list[i].split("x")[0])
-                    y_size = int(self.resolution_list[i].split("x")[1])
-                    img = cv2.resize(img, (x_size, y_size))
+                if self.task_list[i] == "animation":
+                    img = self.animation_cap.read()[1]
                     # 将任务put到队列，队列是进程间通信的一种方式
-                    self.q_list[i][0].put(("pose", img))
-                elif self.task_list[i] == "face":
-                    img = self.face_cap.read()[1]
-                    x_size = int(self.resolution_list[i].split("x")[0])
-                    y_size = int(self.resolution_list[i].split("x")[1])
-                    img = cv2.resize(img, (x_size, y_size))
-                    self.q_list[i][0].put(("face", img))
-                elif self.task_list[i] == "hand":
-                    img = self.hand_cap.read()[1]
-                    x_size = int(self.resolution_list[i].split("x")[0])
-                    y_size = int(self.resolution_list[i].split("x")[1])
-                    img = cv2.resize(img, (x_size, y_size))
-                    self.q_list[i][0].put(("hand", img))
-                elif self.task_list[i] == "artwork":
-                    img = self.video_cap.read()[1]
-                    x_size = int(self.resolution_list[i].split("x")[0])
-                    y_size = int(self.resolution_list[i].split("x")[1])
-                    img = cv2.resize(img, (x_size, y_size))
-                    self.q_list[i][0].put(("artwork", img))
-                elif self.task_list[i] == "blur":
-                    img = self.video_cap.read()[1]
-                    x_size = int(self.resolution_list[i].split("x")[0])
-                    y_size = int(self.resolution_list[i].split("x")[1])
-                    img = cv2.resize(img, (x_size, y_size))
-                    self.q_list[i][0].put(("blur", img))
-                elif self.task_list[i] == "sharp":
-                    img = self.video_cap.read()[1]
-                    x_size = int(self.resolution_list[i].split("x")[0])
-                    y_size = int(self.resolution_list[i].split("x")[1])
-                    img = cv2.resize(img, (x_size, y_size))
-                    self.q_list[i][0].put(("sharp", img))
+                    self.q_list[i][0].put((self.resolution_list[i].split("x")[1], self.angle_list[i], img))
+                elif self.task_list[i] == "dive":
+                    img = self.dive_cap.read()[1]
+                    self.q_list[i][0].put((self.resolution_list[i].split("x")[1], self.angle_list[i], img))
+                elif self.task_list[i] == "dinosaur":
+                    img = self.dinosaur_cap.read()[1]
+                    self.q_list[i][0].put((self.resolution_list[i].split("x")[1], self.angle_list[i], img))
+                elif self.task_list[i] == "eagle":
+                    img = self.eagle_cap.read()[1]
+                    self.q_list[i][0].put((self.resolution_list[i].split("x")[1], self.angle_list[i], img))
+                elif self.task_list[i] == "Iceland":
+                    img = self.Iceland_cap.read()[1]
+                    self.q_list[i][0].put((self.resolution_list[i].split("x")[1], self.angle_list[i], img))
+                elif self.task_list[i] == "zombie":
+                    img = self.zombie_cap.read()[1]
+                    self.q_list[i][0].put((self.resolution_list[i].split("x")[1], self.angle_list[i], img))
 
     def send_back(self, img, client_sock):
         response = self.get_request(img)
